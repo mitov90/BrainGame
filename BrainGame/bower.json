@@ -1,0 +1,17 @@
+{
+  "name": "BrainGame",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mitov90/BrainGame",
+  "authors": [
+    "Team Ermac"
+  ],
+  "description": "Team Ermac",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
