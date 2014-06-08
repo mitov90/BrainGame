@@ -4,7 +4,9 @@
 }
 
 #wrapper {
-    width: 800px;
-    height: 720px;
+
+    width: 920px;
+    height: 500px;
     border: 1px solid black;
+    margin: 50px auto;
 }
