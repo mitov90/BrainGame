@@ -4,9 +4,21 @@
 }
 
 #wrapper {
+    margin: 50px auto;
 
+     /*for testing purpose*/   
     width: 920px;
     height: 500px;
     border: 1px solid black;
-    margin: 50px auto;
+}
+
+header {
+    text-align: center;
+}
+footer {
+    text-align: right;
+}
+
+#wrapper > div {
+    float: left;
 }
