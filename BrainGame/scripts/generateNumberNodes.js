@@ -8,9 +8,11 @@
         maxNumberToDivideOn: 6, // always adding 2 (from 2 to this value)
         allNodesCount: 25,
         closeToAnswerNodesCount: 3, // nodes with the same answer as the real one but with different shape or color
+        pointsRealAnswer: 5,
+        pointsCloseAnswer: 3,
         shapes: ['rect', 'circle'],
         colors: ['green', 'red', 'blue'],
-    }
+    };
 
     function generateAllNodes() {
         var fakeAnswerNodes = [];
@@ -22,17 +24,17 @@
         var currentEqShape = constants.shapes[getRandom(constants.shapes.length)];
 
         // generate equation node
-        (function () {
-            equationNode = new AnswerNode(0, 0, currentEquation.text, currentEqColor, currentEqShape);
+        (function() {
+            equationNode = new AnswerNode(0, 0, currentEquation.text, currentEqColor, currentEqShape, 0);
         }());
 
         // generate real answer node
-        (function () {
-            realAnswerNode = new AnswerNode(0, 0, currentEquation.answer, currentEqColor, currentEqShape);
+        (function() {
+            realAnswerNode = new AnswerNode(0, 0, currentEquation.answer, currentEqColor, currentEqShape, constants.pointsRealAnswer);
         }());
 
         // generate close to answer nodes with text == answer and shape and color != answer
-        (function () {
+        (function() {
             for (var i = 0; i < constants.closeToAnswerNodesCount; i++) {
                 var colorToUse = constants.colors[getRandom(constants.colors.length)];
                 var shapeToUse = constants.shapes[getRandom(constants.shapes.length)];
@@ -44,12 +46,12 @@
                     shapeToUse = constants.shapes[getRandom(constants.shapes.length)];
                 }
 
-                fakeAnswerNodes.push(new AnswerNode(0, 0, currentEquation.answer, colorToUse, shapeToUse));
+                fakeAnswerNodes.push(new AnswerNode(0, 0, currentEquation.answer, colorToUse, shapeToUse, constants.pointsCloseAnswer));
             }
         }());
 
         // randomly generate nodes with text != equation answer
-        (function () {
+        (function() {
             for (var i = 0; i < constants.allNodesCount - constants.closeToAnswerNodesCount; i++) {
                 var currAnswer = getRandom(constants.maxNumberAddSubstract);
 
@@ -58,11 +60,12 @@
                 }
 
                 fakeAnswerNodes.push(new AnswerNode(
-                                    0,
-                                    0,
-                                    currAnswer,
-                                    constants.colors[getRandom(constants.colors.length)],
-                                    constants.shapes[getRandom(constants.shapes.length)]));
+                                                    0,
+                                                    0,
+                                                    currAnswer,
+                                                    constants.colors[getRandom(constants.colors.length)],
+                                                    constants.shapes[getRandom(constants.shapes.length)],
+                                                    0));
             }
         }());
 
@@ -70,15 +73,14 @@
             fakeAnswerNodes: fakeAnswerNodes,
             realAnswerNode: realAnswerNode,
             equationNode: equationNode,
-        }
-
-        // returns a new Answer node - setting the x and y is NOT done here
-        function AnswerNode(x, y, text, color, shape) {
+        }; // returns a new Answer node - setting the x and y is NOT done here
+        function AnswerNode(x, y, text, color, shape, points) {
             this.x = x;
             this.y = y;
             this.text = text;
             this.color = color;
             this.shape = shape;
+            this.points = points;
         }
 
         // returns a new Equation object with properties .text ("1+1") and .answer (2)
@@ -94,8 +96,7 @@
                 operand2 = getRandom(constants.maxNumberAddSubstract);
 
                 return new Equation(operand1 + " + " + operand2, operand1 + operand2);
-            }
-            else if (currentOperation == substract) {
+            } else if (currentOperation == substract) {
                 operand1 = getRandom(constants.maxNumberAddSubstract);
                 operand2 = getRandom(constants.maxNumberAddSubstract);
 
@@ -106,14 +107,12 @@
                 }
 
                 return new Equation(operand1 + " - " + operand2, operand1 - operand2);
-            }
-            else if (currentOperation == multiply) {
+            } else if (currentOperation == multiply) {
                 operand1 = getRandom(constants.maxNumberMultyply);
                 operand2 = getRandom(constants.maxNumberMultyply);
 
                 return new Equation(operand1 + " * " + operand2, operand1 * operand2);
-            }
-            else if (currentOperation == divide) {
+            } else if (currentOperation == divide) {
                 operand1 = getRandom(constants.maxNumberToDivide);
                 operand2 = getRandom(constants.maxNumberToDivideOn) + 2;
 
@@ -136,28 +135,28 @@
                 return {
                     answer: a + b,
                     operator: '+',
-                }
+                };
             }
 
             function substract(a, b) {
                 return {
                     answer: a - b,
                     operator: '-',
-                }
+                };
             }
 
             function multiply(a, b) {
                 return {
                     answer: a * b,
                     operator: '*',
-                }
+                };
             }
 
             function divide(a, b) {
                 return {
                     answer: a / b,
                     operator: '/',
-                }
+                };
             }
         }
 
