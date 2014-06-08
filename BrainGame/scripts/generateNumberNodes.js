@@ -1,18 +1,4 @@
 ﻿function generateNumberNodes() {
-    // game constants set the game dificulty
-    var constants = {
-        operations: 4, // + - * / - reduce this to operate with fiew operators
-        maxNumberAddSubstract: 50,
-        maxNumberMultyply: 10,
-        maxNumberToDivide: 100,
-        maxNumberToDivideOn: 6, // always adding 2 (from 2 to this value)
-        allNodesCount: 25,
-        closeToAnswerNodesCount: 3, // nodes with the same answer as the real one but with different shape or color
-        pointsRealAnswer: 5,
-        pointsCloseAnswer: 3,
-        shapes: ['rect', 'circle'],
-        colors: ['green', 'red', 'blue'],
-    };
 
     function generateAllNodes() {
         var fakeAnswerNodes = [];
@@ -60,12 +46,12 @@
                 }
 
                 fakeAnswerNodes.push(new AnswerNode(
-                                                    0,
-                                                    0,
-                                                    currAnswer,
-                                                    constants.colors[getRandom(constants.colors.length)],
-                                                    constants.shapes[getRandom(constants.shapes.length)],
-                                                    0));
+                    0,
+                    0,
+                    currAnswer,
+                    constants.colors[getRandom(constants.colors.length)],
+                    constants.shapes[getRandom(constants.shapes.length)],
+                    0));
             }
         }());
 
@@ -73,15 +59,7 @@
             fakeAnswerNodes: fakeAnswerNodes,
             realAnswerNode: realAnswerNode,
             equationNode: equationNode,
-        }; // returns a new Answer node - setting the x and y is NOT done here
-        function AnswerNode(x, y, text, color, shape, points) {
-            this.x = x;
-            this.y = y;
-            this.text = text;
-            this.color = color;
-            this.shape = shape;
-            this.points = points;
-        }
+        };
 
         // returns a new Equation object with properties .text ("1+1") and .answer (2)
         function generateRandomEquation() {

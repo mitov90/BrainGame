@@ -204,8 +204,11 @@
     <Content Include="bower_components\raphael\raphael-min.js" />
     <Content Include="bower_components\raphael\raphael.js" />
     <Content Include="brain-game.html" />
+    <Content Include="scripts\AnswerNode.js" />
+    <Content Include="scripts\constants.js" />
     <Content Include="scripts\generateNumberNodes.js" />
     <Content Include="styles\style.css" />
+    <Content Include="scripts\draw-test.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -231,7 +234,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="tests\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
