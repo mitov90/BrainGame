@@ -1,67 +1,56 @@
-﻿window.onload = function () {
-    var paper = Raphael('game-number', constants.gameWindowWidth, constants.gameWindowHeigth);
+﻿window.onload = function() {
+    var paper = Raphael('game-number', constants.gameWindowWidth, constants.gameWindowHeight);
     var nodes = generateNumberNodes();
 
     //debug
     var someNodeforTest = nodes.equationNode;
-    someNodeforTest.x = 50;
-    someNodeforTest.y = 50;
+    someNodeforTest.x = Math.random()* (constants.gameWindowWidth-100) + 30;
+    someNodeforTest.y = Math.random() * (constants.gameWindowHeight-100) +30 ;
     drawNode(someNodeforTest);
     //end debug
 
     function drawNode(node) {
-        switch (node.shape) {
-        case 'rect':
-        {
+        if (node.shape === 'rect') {
             drawRect(node);
-            break;
-        }
-
-        case 'circle':
-        {
+        } else if (node.shape === 'circle') {
             drawCircle(node);
-            break;
-        }
         }
     }
 
     function drawCircle(node) {
-        paper.circle(node.x, node.y, constants.circleNodeRadius)
-                .attr({
-                    fill: node.color,
-                    stroke: 'none'
-                })
-                .click(function (event) {
-                    //TODO: Add event listener to figure
-                });
-        paper.text(node.x, node.y, node.text)
-            .attr({
-                stroke: 'black'
-            })
-            .click(function (event) {
-                //TODO: Add event listener to figure
-            });
+        var circle = paper.circle(node.x, node.y, constants.circleNodeRadius);
+        setShapeAttributes(circle, node);
+
+        var text = paper.text(node.x, node.y, node.text);
+        setTextAttributes(text);
     }
 
     function drawRect(node) {
-        paper.rect(node.x, node.y, constants.rectNodeWidth, constants.rectNodeHeigth).
-            //adding attributes
-            attr({
-                fill: node.color,
-                stroke: 'none'
-            })
-            //adding event
-            .click(function(event) {
-                //TODO: Add event listener to figure
-            });
-        //adding text inside shape
-        paper.text(node.x + constants.rectNodeWidth / 2, node.y + constants.rectNodeHeigth / 2, node.text)
-            .attr({
-                stroke: 'black'
-            })
-            .click(function(event) {
-                //TODO: Add event listener to figure
-            });
+        var rect = paper.rect(node.x, node.y, constants.rectNodeWidth, constants.rectNodeHeight);
+        setShapeAttributes(rect, node);
+
+        var text = paper.text(node.x + constants.rectNodeWidth / 2, node.y + constants.rectNodeHeight / 2, node.text);
+        setTextAttributes(text);
     }
+
+    function setTextAttributes(text) {
+        text.attr({stroke:'white'});
+        text.click(function (event) {
+            //TODO: Add event listener to figure
+        });
+    }
+
+    function setShapeAttributes(shape, node) {
+        shape.attr({
+            fill: node.color,
+            stroke: 'none',
+        });
+
+        //adding event to shape
+        shape.click(function(event) {
+            //TODO: Add event listener to figure
+        });
+    }
+
 
 }
