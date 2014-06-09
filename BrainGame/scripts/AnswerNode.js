@@ -7,7 +7,3 @@ function AnswerNode(x, y, text, color, shape, points) {
     this.shape = shape;
     this.points = points;
 }
-
-//TODO: complete implemetation (protype)
-//AnswerNode.prototype.onClicked = function(event) {};
-//AnswerNode.prototype.onHover = function(event) {};

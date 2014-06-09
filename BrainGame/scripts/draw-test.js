@@ -1,56 +1,23 @@
-﻿window.onload = function() {
+﻿window.onload = function () {
+
     var paper = Raphael('game-number', constants.gameWindowWidth, constants.gameWindowHeight);
     var nodes = generateNumberNodes();
 
-    //debug
-    var someNodeforTest = nodes.equationNode;
-    someNodeforTest.x = Math.random()* (constants.gameWindowWidth-100) + 30;
-    someNodeforTest.y = Math.random() * (constants.gameWindowHeight-100) +30 ;
-    drawNode(someNodeforTest);
-    //end debug
+    var equationNode = nodes.equationNode;
+    equationNode.x = Math.random() * (constants.gameWindowWidth-400) + 200;
+    equationNode.y = constants.gameWindowHeight - constants.rectNodeHeight * 3 / 2;
+    drawNode(paper,equationNode);
 
-    function drawNode(node) {
-        if (node.shape === 'rect') {
-            drawRect(node);
-        } else if (node.shape === 'circle') {
-            drawCircle(node);
-        }
+    var answerNode = nodes.realAnswerNode;
+    answerNode.x = Math.random() * (constants.gameWindowWidth - 100) + 50;
+    answerNode.y = Math.random() * (constants.gameWindowHeight - 100) + 50;
+    drawNode(paper, answerNode);
+
+    for (var i = nodes.fakeAnswerNodes.length - 1; i >= 0; i--) {
+        var node = nodes.fakeAnswerNodes[i];
+        node.x = Math.random() * (constants.gameWindowWidth - 100) + 50;
+        node.y = Math.random() * (constants.gameWindowHeight - 100) + 50;
+        drawNode(paper, node);
     }
-
-    function drawCircle(node) {
-        var circle = paper.circle(node.x, node.y, constants.circleNodeRadius);
-        setShapeAttributes(circle, node);
-
-        var text = paper.text(node.x, node.y, node.text);
-        setTextAttributes(text);
-    }
-
-    function drawRect(node) {
-        var rect = paper.rect(node.x, node.y, constants.rectNodeWidth, constants.rectNodeHeight);
-        setShapeAttributes(rect, node);
-
-        var text = paper.text(node.x + constants.rectNodeWidth / 2, node.y + constants.rectNodeHeight / 2, node.text);
-        setTextAttributes(text);
-    }
-
-    function setTextAttributes(text) {
-        text.attr({stroke:'white'});
-        text.click(function (event) {
-            //TODO: Add event listener to figure
-        });
-    }
-
-    function setShapeAttributes(shape, node) {
-        shape.attr({
-            fill: node.color,
-            stroke: 'none',
-        });
-
-        //adding event to shape
-        shape.click(function(event) {
-            //TODO: Add event listener to figure
-        });
-    }
-
 
 }

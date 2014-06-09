@@ -206,6 +206,7 @@
     <Content Include="brain-game.html" />
     <Content Include="scripts\AnswerNode.js" />
     <Content Include="scripts\constants.js" />
+    <Content Include="scripts\drawingFunc.js" />
     <Content Include="scripts\generateNumberNodes.js" />
     <Content Include="styles\style.css" />
     <Content Include="scripts\draw-test.js" />
