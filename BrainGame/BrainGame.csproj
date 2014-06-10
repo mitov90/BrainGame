@@ -208,6 +208,7 @@
     <Content Include="scripts\constants.js" />
     <Content Include="scripts\drawingFunc.js" />
     <Content Include="scripts\generateNumberNodes.js" />
+    <Content Include="scripts\number-nodes-game.js" />
     <Content Include="styles\style.css" />
     <Content Include="scripts\draw-test.js" />
     <Content Include="Web.config" />
