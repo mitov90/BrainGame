@@ -59,6 +59,15 @@ function getNumbersGame(windowX, windowY, windowSize) {
             fakeAnswerNodes.push(currNodeToPush);
         }
 
+        //animation func for hover effect
+        function animateHover() {
+            this.g = this.glow({color: "#FFF", width: 100});
+        }
+
+        function removeHover(){
+            //this.g.remove();
+        }
+
         // attach individual animation events here
         // equationNode.set.animate(...)
         // all nodes are Raphael set objects
