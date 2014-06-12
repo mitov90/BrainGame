@@ -205,6 +205,7 @@
     <Content Include="bower_components\raphael\raphael.js" />
     <Content Include="brain-game.html" />
     <Content Include="images\numbers-game\background.jpg" />
+    <Content Include="images\ship-game\asteroid.png" />
     <Content Include="images\ship-game\background.jpg" />
     <Content Include="images\ship-game\explode.png" />
     <Content Include="images\ship-game\shipSprite.png" />
