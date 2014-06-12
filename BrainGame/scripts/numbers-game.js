@@ -25,7 +25,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         nodeTextStrokeWidth: 2,
         nodeTextFontSize: '22px',
         nodeTextfontFamily: 'Calibri'
-    }
+    };
 
     // generates the initial allNodesObject which to be used troughout the game loop;
     // they own properties .equationNode ; .realAnswerNode ; .fakeAnswerNodes ([])
@@ -35,9 +35,6 @@ function getNumbersGame(windowX, windowY, windowSize) {
     var allNodesObject = (function () {
         var equationNode = new NumberSetNode(paperToDrawOn);
         equationNode.set.click(function () {
-            if (observerFunction) {
-                observerFunction(constants.equationClicked);
-            }
             RefreshAllNodesObject();
         });
 
@@ -58,7 +55,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                     wrongAnswerObserverFunction();
                 }
                 RefreshAllNodesObject();
-            })
+            });
             fakeAnswerNodes.push(currNodeToPush);
         }
 
@@ -74,7 +71,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
             equationNode: equationNode,
             realAnswerNode: realAnswerNode,
             fakeAnswerNodes: fakeAnswerNodes
-        }
+        };
 
         // creates a new Raphael Set node with circle and text appended
         // sets initial settings and coordinates 0 0
@@ -88,7 +85,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                     'stroke-width': constants.nodeTextStrokeWidth,
                     'font-size': constants.nodeTextFontSize,
                     'font-family': constants.nodeTextfontFamily
-                })
+                });
             this.set = paper.setFinish();
             // animating all node objects here
             // this.set.animate(...);
@@ -102,15 +99,10 @@ function getNumbersGame(windowX, windowY, windowSize) {
         // all the nodes are set in the constant. Only 2 are left - the real answer node and the equation node
         // if a node has a size of 40 and the multiplyer is 2 the node will move in a trajectory of 80px
         var neededSizeForASingleNode = Math.floor(
-                                          (constants.nodeSize * constants.nodeMoveTrajectoryLengthMultyplyer)
-                                        - (constants.nodeSize * constants.nodeMoveTrajectoryOverlapMultyplyer));
+                                          (constants.nodeSize * constants.nodeMoveTrajectoryLengthMultyplyer) -
+                (constants.nodeSize * constants.nodeMoveTrajectoryOverlapMultyplyer));
 
         var numberOfNodesPerLine = Math.floor(windowSize / neededSizeForASingleNode);
-
-        var leftSpaceUnused = windowSize - (neededSizeForASingleNode * numberOfNodesPerLine);
-        var additionOfSizeForASingleNode = Math.floor((leftSpaceUnused / numberOfNodesPerLine));
-
-        neededSizeForASingleNode += additionOfSizeForASingleNode;
 
         var centerX;
         var centerY;
@@ -139,7 +131,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         getNewLevel:RefreshAllNodesObject,
         attachRightAnswerObserverFunction: attachRightAnswerObserverFunction,
         attachWrongAnswerObserverFunction: attachWrongAnswerObserverFunction
-    }
+    };
 
     // the function is called on right answer clicked
     function attachRightAnswerObserverFunction(notifyFunction) {
@@ -184,7 +176,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 colorToUse = constants.colors[getRandom(constants.colors.length)];
 
                 // if the generated color is the same as the real answer - create again
-                while (colorToUse == currentEqColor) {
+                while (colorToUse === currentEqColor) {
                     colorToUse = constants.colors[getRandom(constants.colors.length)];
                 }
 
@@ -200,7 +192,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
             for (i = constants.closeToAnswerNodesCount; i < allNodesObjectToAlter.fakeAnswerNodes.length; i++) {
                 answerToUse = getRandom(constants.maxNumberAddSubstract);
 
-                while (answerToUse == currentEquation.answer) {
+                while (answerToUse === currentEquation.answer) {
                     answerToUse = getRandom(constants.maxNumberAddSubstract);
                 }
                 allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
@@ -218,13 +210,13 @@ function getNumbersGame(windowX, windowY, windowSize) {
             var operand1;
             var operand2;
 
-            if (currentOperation == add) {
+            if (currentOperation === add) {
                 operand1 = getRandom(constants.maxNumberAddSubstract);
                 operand2 = getRandom(constants.maxNumberAddSubstract);
 
                 return new Equation(operand1 + "+" + operand2, operand1 + operand2);
             }
-            else if (currentOperation == substract) {
+            else if (currentOperation === substract) {
                 operand1 = getRandom(constants.maxNumberAddSubstract);
                 operand2 = getRandom(constants.maxNumberAddSubstract);
 
@@ -265,28 +257,28 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 return {
                     answer: a + b,
                     operator: '+'
-                }
+                };
             }
 
             function substract(a, b) {
                 return {
                     answer: a - b,
                     operator: '-'
-                }
+                };
             }
 
             function multiply(a, b) {
                 return {
                     answer: a * b,
                     operator: '*'
-                }
+                };
             }
 
             function divide(a, b) {
                 return {
                     answer: a / b,
                     operator: '/'
-                }
+                };
             }
         }
     }
@@ -295,7 +287,6 @@ function getNumbersGame(windowX, windowY, windowSize) {
     // works with .equationNode ; .realAnswerNode ; .fakeAnswerNodes ([])
     function changeAllNodesCoordinates(allNodesObjectToAlter, allCoordinatesObjectToUse) {
         shuffleCoordinates(allCoordinatesObjectToUse);
-        var index = 0;
 
         // changing all the fake nodes
         for (var index = 0; index < allNodesObjectToAlter.fakeAnswerNodes.length; index++) {
@@ -305,7 +296,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 y: allCoordinatesObjectToUse[index].y,
                 cy: allCoordinatesObjectToUse[index].y
             });
-        };
+        }
 
         // changing the equationNode
 
@@ -342,7 +333,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 temp = arrayToShuffle[i];
                 arrayToShuffle[i] = arrayToShuffle[j];
                 arrayToShuffle[j] = temp;
-            };
+            }
         }
     }
 
