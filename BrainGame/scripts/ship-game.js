@@ -13,8 +13,8 @@ function getShipGame(containerID, windowSize) {
         asteroidSizeConst: 20,
         addNewAsteroidTime1: 1500,
         addNewAsteroidTime2: 3300,
-        moveAsteroidsTime: 20,
-    }
+        moveAsteroidsTime: 20
+    };
 
     var observerFunction = false;
 
@@ -22,9 +22,8 @@ function getShipGame(containerID, windowSize) {
 
     // background setUp
     var backgroundImage = new Image();
-    backgroundImage.src = 'images/ship-game/background.jpg';
     var backgroundKinetic = new Kinetic.Image({
-        image: backgroundImage,
+        image: backgroundImage
     });
     layer.add(backgroundKinetic);
     
@@ -41,8 +40,8 @@ function getShipGame(containerID, windowSize) {
                 0, 0, 50, 45,
                 53, 0, 50, 45,
                 105, 0, 50, 45,
-                53, 0, 50, 45,
-            ],
+                53, 0, 50, 45
+            ]
         },
         frameRate: 15,
         frameIndex: 0
@@ -105,8 +104,8 @@ function getShipGame(containerID, windowSize) {
 
     return {
         gameOver: gameOver,
-        attachObserverFunction: attachObserverFunction,
-    }
+        attachObserverFunction: attachObserverFunction
+    };
 
     function attachObserverFunction(notifyFunction) {
         observerFunction = notifyFunction;
@@ -131,7 +130,7 @@ function getShipGame(containerID, windowSize) {
                 width: sizeToUse,
                 height: sizeToUse,
                 x: 460 - sizeToUse,
-                y: getRandom(460 - sizeToUse),
+                y: getRandom(460 - sizeToUse)
             });
             currLayerToUse.add(currAsteroid);
 
@@ -278,8 +277,8 @@ function getShipGame(containerID, windowSize) {
                         600, 900, 100, 100,
                         700, 900, 100, 100,
                         800, 900, 100, 100,
-                        900, 900, 100, 100,
-                    ],
+                        900, 900, 100, 100
+                    ]
                 },
                 frameRate: 91,
                 frameIndex: 0

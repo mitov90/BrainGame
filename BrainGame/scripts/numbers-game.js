@@ -11,7 +11,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         nodeMoveTrajectoryOverlapMultyplyer: 0, // all nodes will overlap a little - by this value * their size
         allNodesCount: 20,
         closeToAnswerNodesCount: 2, // nodes with the same answer as the real one but with different color
-        colors: ['green', 'red', 'blue', 'yellow'],
+        colors: ['#FFAEAE', '#56BAEC', '#B0E57C', '#FFEC94'],
 
         // equation generator constants
         operations: 4, // + - * / - reduce this to operate with fiew operators
@@ -24,7 +24,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         nodeTextStroke: '#000',
         nodeTextStrokeWidth: 2,
         nodeTextFontSize: '22px',
-        nodeTextfontFamily: 'Calibri',
+        nodeTextfontFamily: 'Calibri'
     }
 
     // generates the initial allNodesObject which to be used troughout the game loop;
@@ -73,7 +73,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         return {
             equationNode: equationNode,
             realAnswerNode: realAnswerNode,
-            fakeAnswerNodes: fakeAnswerNodes,
+            fakeAnswerNodes: fakeAnswerNodes
         }
 
         // creates a new Raphael Set node with circle and text appended
@@ -121,8 +121,8 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 centerY = Math.floor((colY * neededSizeForASingleNode) + neededSizeForASingleNode / 2);
                 allCoords.push({
                     x: centerX,
-                    y: centerY,
-                })
+                    y: centerY
+                });
             }
         }
 
@@ -138,7 +138,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         constants: constants,
         getNewLevel:RefreshAllNodesObject,
         attachRightAnswerObserverFunction: attachRightAnswerObserverFunction,
-        attachWrongAnswerObserverFunction: attachWrongAnswerObserverFunction,
+        attachWrongAnswerObserverFunction: attachWrongAnswerObserverFunction
     }
 
     // the function is called on right answer clicked
@@ -166,7 +166,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         (function () {
             allNodesObjectToAlter.equationNode.set.attr({
                 text: currentEquation.text,
-                fill: currentEqColor,
+                fill: currentEqColor
             });
         }());
 
@@ -174,7 +174,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
         (function () {
             allNodesObjectToAlter.realAnswerNode.set.attr({
                 text: currentEquation.answer,
-                fill: currentEqColor,
+                fill: currentEqColor
             });
         }());
 
@@ -190,7 +190,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
 
                 allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
                     text: currentEquation.answer,
-                    fill: colorToUse,
+                    fill: colorToUse
                 });
             }
         }());
@@ -205,7 +205,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 }
                 allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
                     text: answerToUse,
-                    fill: constants.colors[getRandom(constants.colors.length)],
+                    fill: constants.colors[getRandom(constants.colors.length)]
                 });
             }
         }());
@@ -264,28 +264,28 @@ function getNumbersGame(windowX, windowY, windowSize) {
             function add(a, b) {
                 return {
                     answer: a + b,
-                    operator: '+',
+                    operator: '+'
                 }
             }
 
             function substract(a, b) {
                 return {
                     answer: a - b,
-                    operator: '-',
+                    operator: '-'
                 }
             }
 
             function multiply(a, b) {
                 return {
                     answer: a * b,
-                    operator: '*',
+                    operator: '*'
                 }
             }
 
             function divide(a, b) {
                 return {
                     answer: a / b,
-                    operator: '/',
+                    operator: '/'
                 }
             }
         }
@@ -303,7 +303,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
                 x: allCoordinatesObjectToUse[index].x,
                 cx: allCoordinatesObjectToUse[index].x,
                 y: allCoordinatesObjectToUse[index].y,
-                cy: allCoordinatesObjectToUse[index].y,
+                cy: allCoordinatesObjectToUse[index].y
             });
         };
 
@@ -314,7 +314,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
             x: allCoordinatesObjectToUse[index].x,
             cx: allCoordinatesObjectToUse[index].x,
             y: allCoordinatesObjectToUse[index].y,
-            cy: allCoordinatesObjectToUse[index].y,
+            cy: allCoordinatesObjectToUse[index].y
         });
 
 
@@ -327,7 +327,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
             x: allCoordinatesObjectToUse[index].x,
             cx: allCoordinatesObjectToUse[index].x,
             y: allCoordinatesObjectToUse[index].y,
-            cy: allCoordinatesObjectToUse[index].y,
+            cy: allCoordinatesObjectToUse[index].y
         });
 
         // Fisher-Yates shuffle implementation
