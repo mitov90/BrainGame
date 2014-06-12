@@ -33,3 +33,13 @@ footer {
     width:460px;
     height:460px;
 }
+
+#information {
+    position:absolute;
+    top:500px;
+    font-size:24px;
+}
+
+#information h3 {
+    margin: 0;
+}

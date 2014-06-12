@@ -25,11 +25,6 @@ function getNumbersGame(windowX, windowY, windowSize) {
         nodeTextStrokeWidth: 2,
         nodeTextFontSize: '22px',
         nodeTextfontFamily: 'Calibri',
-
-        // event properties
-        wrongAnswerClicked: 'wrong answer',
-        rightAnswerClicked: 'right answer',
-        equationClicked: 'equation'
     }
 
     // generates the initial allNodesObject which to be used troughout the game loop;
@@ -48,8 +43,8 @@ function getNumbersGame(windowX, windowY, windowSize) {
 
         var realAnswerNode = new NumberSetNode(paperToDrawOn);
         realAnswerNode.set.click(function () {
-            if (observerFunction) {
-                observerFunction(constants.rightAnswerClicked);
+            if (rightAnswerObserverFunction) {
+                rightAnswerObserverFunction();
             }
             RefreshAllNodesObject();
         });
@@ -59,8 +54,8 @@ function getNumbersGame(windowX, windowY, windowSize) {
         for (var i = 0; i < constants.allNodesCount; i++) {
             var currNodeToPush = new NumberSetNode(paperToDrawOn);
             currNodeToPush.set.click(function () {
-                if (observerFunction) {
-                    observerFunction(constants.wrongAnswerClicked);
+                if (wrongAnswerObserverFunction) {
+                    wrongAnswerObserverFunction();
                 }
                 RefreshAllNodesObject();
             })
@@ -134,14 +129,26 @@ function getNumbersGame(windowX, windowY, windowSize) {
         return allCoords;
     }());
 
-    var observerFunction;
+    var rightAnswerObserverFunction;
+    var wrongAnswerObserverFunction;
 
     RefreshAllNodesObject();
 
     return {
         constants: constants,
         getNewLevel:RefreshAllNodesObject,
-        attachObserverFunction: attachObserverFunction,
+        attachRightAnswerObserverFunction: attachObserverFunction,
+        attachWrongAnswerObserverFunction: attachObserverFunction,
+    }
+
+    // the function is called on right answer clicked
+    function attachObserverFunction(notifyFunction) {
+        rightAnswerObserverFunction = notifyFunction;
+    }
+
+    // the function is called on right wrong clicked
+    function attachObserverFunction(notifyFunction) {
+        wrongAnswerObserverFunction = notifyFunction;
     }
 
     // takes a allNodesObj and changes its Answer node elements properties (text and color)
@@ -347,10 +354,6 @@ function getNumbersGame(windowX, windowY, windowSize) {
     // returns a random int number from 0 to x NOT including x
     function getRandom(x) {
         return Math.floor(Math.random() * x);
-    }
-
-    function attachObserverFunction(notifyFunction) {
-        observerFunction = notifyFunction;
     }
 
     // holds all tests for development
