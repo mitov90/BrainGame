@@ -2,32 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Brain Game</title>
+
+    <link href="styles/style.css" rel="stylesheet" />
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/kineticjs/kinetic.min.js"></script>
     <script src="bower_components/raphael/raphael-min.js"></script>
-    <script src="scripts/constants.js"></script>
-    <script src="scripts/AnswerNode.js"></script>
-    <script src="scripts/generateNumberNodes.js"></script>
-    <script src="scripts/drawingFunc.js"></script>
-    <script src="scripts/draw-test.js"></script>
-    <link href="styles/style.css" rel="stylesheet" />
-    <script src="scripts/number-nodes-game.js"></script>
+
+    <script src="scripts/ship-game.js"></script>
+    <script src="scripts/numbers-game.js"></script>
+    <script src="scripts/engine-game.js"></script>
 </head>
-    <body>
-        <header><h2>Brain Game</h2></header>
+    <body onload="runGame()">
         <div id="wrapper">
-            <div id="game-balance"></div>
-            <div id="game-number">
-                <script>
-                    var gameTest = getNumbersNodeGame(400, 50, 500);
-                    gameTest.attachObserverFunction(function (text) {
-                        console.log(text);
-                    });
-                    gameTest.startGame();
-                </script>
-            </div>
+            <div id="game-ship"></div>
+            <div id="game-numbers"></div>
             <div id="scores"></div>
         </div>
+
         <footer>Team "Ermac" Telerik Academy 2014</footer>
     </body>
 </html>

@@ -1,6 +1,5 @@
-﻿
-// needs paperToDrawOn so that coordinates can be properly produced
-function getNumbersNodeGame(windowX, windowY, windowSize) {
+﻿// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
+function getNumbersGame(windowX, windowY, windowSize) {
     // generates the main Raphael window
     var paperToDrawOn = Raphael(windowX, windowY, windowSize, windowSize);
 
@@ -9,7 +8,7 @@ function getNumbersNodeGame(windowX, windowY, windowSize) {
         // node properties:
         nodeSize: 30, // serves also for node circle radius
         nodeMoveTrajectoryLengthMultyplyer: 2, // all nodes move a little - this is by how much relative to their size
-        nodeMoveTrajectoryOverlapMultyplyer: 0.15, // all nodes will overlap a little - by this value * their size
+        nodeMoveTrajectoryOverlapMultyplyer: 0, // all nodes will overlap a little - by this value * their size
         allNodesCount: 20,
         closeToAnswerNodesCount: 2, // nodes with the same answer as the real one but with different color
         colors: ['green', 'red', 'blue', 'yellow'],
@@ -73,8 +72,8 @@ function getNumbersNodeGame(windowX, windowY, windowSize) {
         // all nodes are Raphael set objects
 
         // this is a sample animation for the equation node
-        var anim = Raphael.animation({ "transform": "r 360" }, 2000, "bounce");
-        equationNode.set.animate(anim.delay(500)); // run the given animation after 500 ms
+        var anim = Raphael.animation({ "transform": "r 360" }, 3000, "bounce");
+        equationNode.set.animate(anim.repeat(1000)); // run the given animation after 500 ms
 
         return {
             equationNode: equationNode,
@@ -137,10 +136,12 @@ function getNumbersNodeGame(windowX, windowY, windowSize) {
 
     var observerFunction;
 
+    RefreshAllNodesObject();
+
     return {
         constants: constants,
-        startGame: RefreshAllNodesObject,
-        attachObserverFunction: SubscribeToGameObserver,
+        getNewLevel:RefreshAllNodesObject,
+        attachObserverFunction: attachObserverFunction,
     }
 
     // takes a allNodesObj and changes its Answer node elements properties (text and color)
@@ -348,7 +349,7 @@ function getNumbersNodeGame(windowX, windowY, windowSize) {
         return Math.floor(Math.random() * x);
     }
 
-    function SubscribeToGameObserver(notifyFunction) {
+    function attachObserverFunction(notifyFunction) {
         observerFunction = notifyFunction;
     }
 

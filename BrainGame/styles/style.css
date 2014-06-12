@@ -1,37 +1,35 @@
-﻿* {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-*:active,
-*:hover {
-  cursor: default;
-}
-
-body {
+﻿body {
     padding: 0;
     margin: 0;
 }
 
 #wrapper {
-    margin: 50px auto;
-
+    /*margin: 50px auto;*/
      /*for testing purpose*/   
-    width: 920px;
-    height: 500px;
+    width: 1000px;
+    height: 600px;
     border: 1px solid black;
+    position:relative;
 }
 
-header {
-    text-align: center;
-}
 footer {
     text-align: right;
 }
 
-#wrapper > div {
-    float: left;
+#game-numbers {
+    margin:20px;
+    position:absolute;
+    left:500px;
+    border:1px solid black;
+    width:460px;
+    height:460px;
+    background-image:url("../images/numbers-game/background.jpg");
+}
+#game-ship {
+    margin:20px;
+    position:absolute;
+    left:0;
+    border:1px solid black;
+    width:460px;
+    height:460px;
 }

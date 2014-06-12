@@ -1,4 +1,4 @@
-﻿// returns a new Answer node - setting the x and y is NOT done here
+﻿// returns a new Answer node - setting the x and y is NOT done here/
 function AnswerNode(x, y, text, color, shape, points) {
     this.x = x;
     this.y = y;
