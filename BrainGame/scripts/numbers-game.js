@@ -73,8 +73,10 @@ function getNumbersGame(windowX, windowY, windowSize) {
         // all nodes are Raphael set objects
 
         // this is a sample animation for the equation node
-        var anim = Raphael.animation({ "transform": "r 360" }, 3000, "bounce");
-        equationNode.set.animate(anim.repeat(1000)); // run the given animation after 500 ms
+        var animationTime = 3000;
+        var anim = Raphael.animation({ "transform": "r 360" }, animationTime, "bounce");
+        var t = equationNode.set.animate(anim.repeat(1000)); // run the given animation after 500 ms
+        setTimeout(function(){t.stop()},animationTime);
 
         return {
             equationNode: equationNode,
