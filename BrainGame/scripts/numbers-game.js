@@ -137,17 +137,17 @@ function getNumbersGame(windowX, windowY, windowSize) {
     return {
         constants: constants,
         getNewLevel:RefreshAllNodesObject,
-        attachRightAnswerObserverFunction: attachObserverFunction,
-        attachWrongAnswerObserverFunction: attachObserverFunction,
+        attachRightAnswerObserverFunction: attachRightAnswerObserverFunction,
+        attachWrongAnswerObserverFunction: attachWrongAnswerObserverFunction,
     }
 
     // the function is called on right answer clicked
-    function attachObserverFunction(notifyFunction) {
+    function attachRightAnswerObserverFunction(notifyFunction) {
         rightAnswerObserverFunction = notifyFunction;
     }
 
     // the function is called on right wrong clicked
-    function attachObserverFunction(notifyFunction) {
+    function attachWrongAnswerObserverFunction(notifyFunction) {
         wrongAnswerObserverFunction = notifyFunction;
     }
 

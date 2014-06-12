@@ -16,7 +16,7 @@
         score += 10;
     });
     numbersGame.attachWrongAnswerObserverFunction(function () {
-        fuel /= 2;
+        fuel -= 10;
     })
 
     var gameEngine = setInterval(function () {

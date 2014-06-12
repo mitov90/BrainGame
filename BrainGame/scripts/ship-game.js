@@ -145,7 +145,7 @@ function getShipGame(containerID, windowSize) {
                                ship.getY() + 16,
                                asteroids[i].attrs.x + asteroids[i].attrs.width / 2,
                                asteroids[i].attrs.y + asteroids[i].attrs.height / 2,
-                               22, asteroids[i].attrs.width / 2)) {
+                               19, asteroids[i].attrs.width / 2)) {
                 gameOver();
             }
         }
