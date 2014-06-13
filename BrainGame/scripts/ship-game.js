@@ -280,11 +280,14 @@ function getShipGame(containerID, windowSize) {
                         900, 900, 100, 100
                     ]
                 },
-                frameRate: 91,
+                frameRate: 40,
                 frameIndex: 0
             });
             layer.add(boom);
             boom.start();
+            setTimeout(function () {
+                boom.stop();
+            }, 1000);
         }
     }
 
