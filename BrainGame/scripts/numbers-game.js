@@ -1,4 +1,14 @@
-﻿// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
+﻿Raphael.fn.ball = function (x, y, r, hue) {
+    hue = hue || 0;
+    return this.set(
+        this.ellipse(x, y + r - r / 5, r, r / 2).attr({ fill: "rhsb(" + hue + ", 1, .25)-hsb(" + hue + ", 1, .25)", stroke: "none", opacity: 0 }),
+        this.ellipse(x, y, r, r).attr({ fill: "r(.5,.9)hsb(" + hue + ", 1, 0.9)-hsb(" + hue + ", .8, .3)", stroke: "none" }),
+        this.ellipse(x, y, r - r / 5, r - r / 20).attr({ stroke: "none", fill: "r(.5,.1)#ccc-#ccc", opacity: 0 })
+    );
+};
+
+
+// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
 function getNumbersGame(holderID) {
     var holder = document.getElementById(holderID);
     var windowSize = holder.offsetWidth;
@@ -42,23 +52,13 @@ function getNumbersGame(holderID) {
         });
 
         var realAnswerNode = new NumberSetNode(paperToDrawOn);
-        realAnswerNode.set.click(function () {
-            if (rightAnswerObserverFunction) {
-                rightAnswerObserverFunction();
-            }
-            RefreshAllNodesObject();
-        });
+        realAnswerNode.set.click(onCorrectAnswerGiven);
 
         var fakeAnswerNodes = [];
 
         for (var i = 0; i < constants.allNodesCount; i++) {
             var currNodeToPush = new NumberSetNode(paperToDrawOn);
-            currNodeToPush.set.click(function () {
-                if (wrongAnswerObserverFunction) {
-                    wrongAnswerObserverFunction();
-                }
-                RefreshAllNodesObject();
-            });
+            currNodeToPush.set.click(onWrongAnswerGiven);
             fakeAnswerNodes.push(currNodeToPush);
         }
 
@@ -87,11 +87,33 @@ function getNumbersGame(holderID) {
             fakeAnswerNodes: fakeAnswerNodes
         };
 
+        function onCorrectAnswerGiven() {
+
+            if (rightAnswerObserverFunction) {
+                rightAnswerObserverFunction();
+            }
+
+            RefreshAllNodesObject();
+        }
+
+        function onWrongAnswerGiven() {
+
+            if (wrongAnswerObserverFunction) {
+                wrongAnswerObserverFunction();
+            }
+
+            RefreshAllNodesObject();
+        }
+
         // creates a new Raphael Set node with circle and text appended
         // sets initial settings and coordinates 0 0
+
+        
+
         function NumberSetNode(paper) {
             paper.setStart();
-            paper.circle(0, 0, constants.nodeSize);
+            //paper.circle(0, 0, constants.nodeSize);
+            paper.ball(0, 0, constants.nodeSize, Math.random());
             paper.text(0, 0, '')
                 .attr({
                     'text-anchor': 'center',
@@ -100,7 +122,12 @@ function getNumbersGame(holderID) {
                     'font-size': constants.nodeTextFontSize,
                     'font-family': constants.nodeTextfontFamily
                 });
+
             this.set = paper.setFinish();
+
+            
+
+
             // animating all node objects here
             // this.set.animate(...);
         }
@@ -173,7 +200,7 @@ function getNumbersGame(holderID) {
         (function () {
             allNodesObjectToAlter.equationNode.set.attr({
                 text: currentEquation.text,
-                fill: currentEqColor
+                //fill: currentEqColor
             });
         }());
 
@@ -181,7 +208,7 @@ function getNumbersGame(holderID) {
         (function () {
             allNodesObjectToAlter.realAnswerNode.set.attr({
                 text: currentEquation.answer,
-                fill: currentEqColor
+                //fill: currentEqColor
             });
         }());
 
@@ -197,7 +224,7 @@ function getNumbersGame(holderID) {
 
                 allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
                     text: currentEquation.answer,
-                    fill: colorToUse
+                    //fill: colorToUse
                 });
             }
         }());
@@ -212,7 +239,7 @@ function getNumbersGame(holderID) {
                 }
                 allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
                     text: answerToUse,
-                    fill: constants.colors[getRandom(constants.colors.length)]
+                    //fill: constants.colors[getRandom(constants.colors.length)]
                 });
             }
         }());
@@ -355,6 +382,20 @@ function getNumbersGame(holderID) {
     function RefreshAllNodesObject() {
         changeAllNodesContent(allNodesObject);
         changeAllNodesCoordinates(allNodesObject, allCoordinatesObject);
+
+        // TODO: raphael objects
+        //allNodesObject.equationNode.set.animate({
+        //    fill: 'red',
+        //    'fill-opacity': '1',
+        //    callback: function () {
+        //        allNodesObject.equationNode.set.animate({
+        //            fill: 'white',
+        //            'fill-opacity': '0'
+        //        }, 500)
+        //    }
+        //}, 500);
+        //allNodesObject.realAnswerNode.set
+        //allNodesObject.fakeAnswerNodes.set
     }
 
     // returns a random int number from 0 to x NOT including x
