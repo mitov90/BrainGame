@@ -1,7 +1,10 @@
 ﻿// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
-function getNumbersGame(windowX, windowY, windowSize) {
+function getNumbersGame(holderID) {
+    var holder = document.getElementById(holderID);
+    var windowSize = holder.offsetWidth;
+
     // generates the main Raphael window
-    var paperToDrawOn = Raphael(windowX, windowY, windowSize, windowSize);
+    var paperToDrawOn = Raphael(holderID, windowSize, windowSize);
 
     // game constants set the game difficulty
     var constants = {
@@ -104,6 +107,7 @@ function getNumbersGame(windowX, windowY, windowSize) {
     }());
 
     // all coordinates object
+    // needs windowSize
     var allCoordinatesObject = (function () {
         var allCoords = [];
 

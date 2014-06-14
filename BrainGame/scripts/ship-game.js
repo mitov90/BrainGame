@@ -1,5 +1,7 @@
 ﻿// needs coordinates ot top left window and size of window (square as the other game)
-function getShipGame(containerID, windowSize) {
+function getShipGame(containerID) {
+    var windowSize = document.getElementById(containerID).offsetWidth;
+
     var stage = new Kinetic.Stage({
         container: containerID,
         width: windowSize,
@@ -162,6 +164,7 @@ function getShipGame(containerID, windowSize) {
         if (observerFunction) {
             observerFunction();
         }
+
         window.removeEventListener("keydown", checkMove);
         clearInterval(adder1);
         clearInterval(adder2);
@@ -290,5 +293,4 @@ function getShipGame(containerID, windowSize) {
             }, 1000);
         }
     }
-
 }

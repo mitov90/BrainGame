@@ -1,38 +1,63 @@
-﻿function runGame() {
+﻿function createGame(holderQuerrySelector) {
+    var $holder = $(holderQuerrySelector);
+
+    var $shipGame = $('<div />')
+                        .attr('id', 'game-ship')
+                        .appendTo($holder);
+
+    var $numbersGame = $('<div />')
+                        .attr('id', 'game-numbers')
+                        .appendTo($holder);
+
+    var $graphGame = $('<div />')
+                        .attr('id', 'game-graph')
+                        .appendTo($holder);
+
     var score = 0;
     var fuel = 100;
-    var scoreContainer = $('#score');
-    var fuelContainer = $('#fuel');
 
-    var shipGame = getShipGame('game-ship', 460);
-    shipGame.attachObserverFunction(function () {
-        // wait for explosion
-        setTimeout(gameIsOver, 1000);
-    });
+    var shipGame = getShipGame($shipGame.attr('id'));
+    shipGame.attachObserverFunction(endGame);
 
-    var numbersGame = getNumbersGame(525, 25, 460);
-    numbersGame.attachRightAnswerObserverFunction(function () {
+    var numbersGame = getNumbersGame($numbersGame.attr('id'));
+    numbersGame.attachRightAnswerObserverFunction(numbersRightAnswer);
+    numbersGame.attachWrongAnswerObserverFunction(numbersWrongAnswer);
+
+    var graph = createGraph($graphGame.attr('id'));
+
+    var gameEngine = setInterval(gameRefresh, 100);
+
+    function gameRefresh() {
+        score++;
+        fuel -= 0.1;
+
+        if (fuel <= 0) {
+            endGame();
+        }
+
+        // graph Y is on 0 to 120 -> on 100 fuel - 20 Y
+        // less fuel means more Y
+        graph.drawPoint(120 - fuel);
+
+        graph.setScore(score);
+        graph.setFuel(fuel);
+    }
+
+    function numbersRightAnswer() {
         fuel += 5;
         score += 10;
-    });
-    numbersGame.attachWrongAnswerObserverFunction(function () {
+        graph.addAnswered();
+    }
+
+    function numbersWrongAnswer() {
         fuel -= 10;
-    })
+    }
 
-    var gameEngine = setInterval(function () {
-        score++;
-        fuel--;
-        scoreContainer.html(score);
-        fuelContainer.html(fuel);
-        if (fuel <= 0) {
-            alert('Out of fuel');
-            gameIsOver();
-        }
-    }, 1000)
-
-    function gameIsOver() {
+    function endGame() {
         // what to do when game over
-        alert('sorry :(');
         clearInterval(gameEngine);
+        setTimeout(function () {
+            $holder.fadeOut(3000);
+        },500)
     }
 }
