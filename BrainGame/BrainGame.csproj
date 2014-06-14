@@ -57,6 +57,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="brain-game-help.html" />
     <Content Include="Brain-Game-Menu.html" />
     <Content Include="images\bodyBackgroundGradient.png" />
     <Content Include="images\GameBackground.png" />

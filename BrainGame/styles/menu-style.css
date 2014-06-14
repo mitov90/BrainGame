@@ -23,6 +23,41 @@ body {
     background-repeat:no-repeat;
     
 }
+
+#help-title {
+    align-content: center;
+    text-align: center;
+    color: mediumturquoise;
+    margin-left:45px;
+    font-size:28px;
+    font-weight: bold;
+    padding-left: 25px;
+    text-shadow: 0px 0px 10px aqua;
+}
+
+#help-text {
+    
+    color: azure;
+    margin-left:45px;
+    font-size:20px;
+    padding-left: 25px;
+    top: 800px;
+    left: 1300px;
+    text-shadow: 0px 0px 10px aqua;
+}
+
+#return {
+    
+    color: mediumturquoise;
+    margin:45px;
+    font-size:20px;
+    padding-left: 25px;
+    font-weight: bold;
+    top: 800px;
+    left: 1300px;
+    text-shadow: 0px 0px 10px aqua;
+}
+
 h1 {
     align-content: center;
     text-align: center;
@@ -43,7 +78,7 @@ li {
         */
     text-align: center;
     margin:45px;
-    font-size:large;
+    font-size:28px;
     text-shadow: 0px 0px 5px azure;
 }
 
