@@ -21,7 +21,7 @@ function createGraph(containerID) {
     var scoreStat = new Kinetic.Text({
         x: stage.width() / 2 - 90,
         y: 15,
-        text: '0',
+        text: '9990',
         fontSize: 90,
         fontFamily: 'Calibri',
         fill: '#00FFFF',
@@ -54,10 +54,10 @@ function createGraph(containerID) {
     points.push(0);
     points.push(100);
 
+    layer.add(line);
     layer.add(fuelStat);
     layer.add(correctAnswersStat);
     layer.add(scoreStat);
-    layer.add(line);
     stage.add(layer);
 
     var anim = new Kinetic.Animation(function() {

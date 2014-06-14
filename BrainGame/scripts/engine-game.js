@@ -15,7 +15,7 @@
 
     var score = 0;
     var fuel = 100;
-
+    
     var shipGame = getShipGame($shipGame.attr('id'));
     shipGame.attachObserverFunction(endGame);
 

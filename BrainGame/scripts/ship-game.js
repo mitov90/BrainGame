@@ -9,13 +9,14 @@ function getShipGame(containerID) {
     });
 
     var constants = {
-        moveSpeed: 10,
+        moveSpeed: 5,
+        moveCheckInterval: 20,
         asteroidsCount: 10,
         asteroidSizeVary: 2,
         asteroidSizeConst: 20,
         addNewAsteroidTime1: 1500,
         addNewAsteroidTime2: 3300,
-        moveAsteroidsTime: 20
+        moveAsteroidsTime: 20,
     };
 
     var observerFunction = false;
@@ -28,79 +29,124 @@ function getShipGame(containerID) {
         image: backgroundImage
     });
     layer.add(backgroundKinetic);
-    
-    // ship
-    var shipImageSprites = new Image();
-    shipImageSprites.src = 'images/ship-game/shipSprite.png';
-    var ship = new Kinetic.Sprite({
-        x: 20,
-        y: 230,
-        image: shipImageSprites,
-        animation: 'fly',
-        animations: {
-            fly: [
-                0, 0, 50, 45,
-                53, 0, 50, 45,
-                105, 0, 50, 45,
-                53, 0, 50, 45
-            ]
-        },
-        frameRate: 15,
-        frameIndex: 0
-    });
-    layer.add(ship);
-    ship.start();
 
-    // player movement
-    window.addEventListener("keydown", checkMove);
-    function checkMove(e) {
-        switch (e.keyCode) {
-            case 38: // Up Arrow
-            case 87: // W
+    // asteroids setUp
+    var asteroids = [];
+    var asteroidImage = new Image();
+    asteroidImage.src = 'images/ship-game/asteroid.png';
+
+    var asteroidsAdder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
+    var asteroidsAdder2 = setInterval(addNewAsteroid, constants.addNewAsteroidTime2);
+    var asteroidsMover = setInterval(moveAsteroids, constants.moveAsteroidsTime);
+    
+    // ship generation
+    var ship;
+    (function () {
+        var shipImageSprites = new Image();
+        shipImageSprites.src = 'images/ship-game/shipSprite.png';
+        ship = new Kinetic.Sprite({
+            x: 20,
+            y: 230,
+            image: shipImageSprites,
+            animation: 'fly',
+            animations: {
+                fly: [
+                    0, 0, 50, 45,
+                    53, 0, 50, 45,
+                    105, 0, 50, 45,
+                    53, 0, 50, 45
+                ]
+            },
+            frameRate: 15,
+            frameIndex: 0
+        });
+        layer.add(ship);
+        ship.start();
+    }());
+    
+    var keyboardListener;
+    // Player Movement Set Up
+    (function () {
+        var keyArrowUp = false;
+        var keyArrowDown = false;
+        var keyArrowLeft = false;
+        var keyArrowRight = false;
+
+        window.addEventListener("keydown", function (e) {
+            switch (e.which) {
+                case 38:
+                case 87: // W
+                    keyArrowUp = true;
+                    break;
+                case 40:
+                case 83: // S
+                    keyArrowDown = true;
+                    break;
+                case 37:
+                case 65: // A
+                    keyArrowLeft = true;
+                    break;
+                case 39:
+                case 68: // D
+                    keyArrowRight = true;
+                    break;
+            }
+            e.preventDefault();
+        });
+
+        window.addEventListener("keyup", function (e) {
+            switch (e.which) {
+                case 38:
+                case 87: // W
+                    keyArrowUp = false;
+                    break;
+                case 40:
+                case 83: // S
+                    keyArrowDown = false;
+                    break;
+                case 37:
+                case 65: // A
+                    keyArrowLeft = false;
+                    break;
+                case 39:
+                case 68: // D
+                    keyArrowRight = false;
+                    break;
+            }
+            e.preventDefault();
+        });
+
+        keyboardListener = setInterval(function (e) {
+            if (keyArrowUp) {
                 ship.setY(ship.getY() - constants.moveSpeed);
                 if (ship.getY() < 0) {
                     ship.setY(0);
                 }
-                break;
-
-            case 40: // Down Arrow
-            case 83: // S
+            }
+            else if (keyArrowDown) {
                 ship.setY(ship.getY() + constants.moveSpeed);
                 // vertical size of ship is 45 and field size is 460
                 if (ship.getY() > 460 - 45) {
                     ship.setY(460 - 45);
                 }
-                break;
-
-            case 37: // Left Arrow
-            case 65: // A
+            }
+            if (keyArrowLeft) {
                 ship.setX(ship.getX() - constants.moveSpeed);
                 if (ship.getX() < 0) {
                     ship.setX(0);
                 }
-                break;
-
-            case 39: // RightArrow
-            case 68: // D
+            }
+            else if (keyArrowRight) {
                 ship.setX(ship.getX() + constants.moveSpeed);
                 // horizontal size of ship is 50 and field size is 460
                 if (ship.getX() > 460 - 50) {
                     ship.setX(460 - 50);
                 }
-                break;
-        }
-        checkAsteroids();
-        e.preventDefault();
-    }
+            }
 
-    // asteroids
-    var asteroids = [];
-    var asteroidImage = new Image();
-    asteroidImage.src = 'images/ship-game/asteroid.png';
-    var adder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
-    var adder2 = setInterval(addNewAsteroid, constants.addNewAsteroidTime2);
-
-    var mover = setInterval(moveAsteroids, constants.moveAsteroidsTime);
+            checkAsteroids();
+        }, constants.moveCheckInterval);
+    }())
 
     stage.add(layer);
 
@@ -164,11 +210,11 @@ function getShipGame(containerID) {
         if (observerFunction) {
             observerFunction();
         }
-
-        window.removeEventListener("keydown", checkMove);
-        clearInterval(adder1);
-        clearInterval(adder2);
-        clearInterval(mover);
+        
+        clearInterval(asteroidsAdder1);
+        clearInterval(asteroidsAdder2);
+        clearInterval(asteroidsMover);
+        clearInterval(keyboardListener);
         explode();
 
         function explode() {
