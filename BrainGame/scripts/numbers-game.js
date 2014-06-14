@@ -113,7 +113,7 @@ function getNumbersGame(holderID) {
         function NumberSetNode(paper) {
             paper.setStart();
             //paper.circle(0, 0, constants.nodeSize);
-            paper.ball(0, 0, constants.nodeSize, Math.random());
+            paper.ball(0, 0, constants.nodeSize, Math.random()); // TODO: fix random colors
             paper.text(0, 0, '')
                 .attr({
                     'text-anchor': 'center',
