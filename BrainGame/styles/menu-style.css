@@ -11,6 +11,10 @@ h1 {
     text-shadow: 0px 0px 10px aqua;
 }
 
+ul {
+    list-style-type: none;
+}
+
 li {
     text-emphasis:none;
     /*
