@@ -203,7 +203,9 @@
     <Content Include="bower_components\raphael\license.txt" />
     <Content Include="bower_components\raphael\raphael-min.js" />
     <Content Include="bower_components\raphael\raphael.js" />
+    <Content Include="Brain-Game-Menu.html" />
     <Content Include="brain-game.html" />
+    <Content Include="images\game-menu\space-background.jpg" />
     <Content Include="images\numbers-game\background.jpg" />
     <Content Include="images\ship-game\asteroid.png" />
     <Content Include="images\ship-game\background.jpg" />
@@ -212,10 +214,12 @@
     <Content Include="scripts\AnswerNode.js" />
     <Content Include="scripts\drawingFunc.js" />
     <Content Include="scripts\engine-game.js" />
+    <Content Include="scripts\game-menu.js" />
     <Content Include="scripts\generateNumberNodes.js" />
     <Content Include="scripts\generateStatisticsNow.js" />
     <Content Include="scripts\numbers-game.js" />
     <Content Include="scripts\ship-game.js" />
+    <Content Include="styles\menu-style.css" />
     <Content Include="styles\style.css" />
     <Content Include="scripts\draw-test.js" />
     <Content Include="Web.config" />
