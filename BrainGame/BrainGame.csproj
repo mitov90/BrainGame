@@ -57,8 +57,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Brain-Game-Menu.html" />
     <Content Include="images\bodyBackgroundGradient.png" />
     <Content Include="images\GameBackground.png" />
+    <Content Include="images\menu-back1.jpg" />
+    <Content Include="images\space-background.jpg" />
+    <Content Include="images\menu-back2.jpg" />
     <Content Include="scripts\graph-drawer.js" />
     <Content Include="brain-game.html" />
     <Content Include="images\ship-game\asteroid.png" />
@@ -70,6 +74,7 @@
     <Content Include="scripts\libs\raphael-min.js" />
     <Content Include="scripts\numbers-game.js" />
     <Content Include="scripts\ship-game.js" />
+    <Content Include="styles\menu-style.css" />
     <Content Include="styles\style.css" />
     <Content Include="Web.config" />
   </ItemGroup>

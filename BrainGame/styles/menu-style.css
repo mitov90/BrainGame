@@ -1,13 +1,34 @@
-﻿body {
-    font-family: 'Trebuchet MS', Consolas, sans-serif;
+﻿
+/*body {
+    height: 700px;
+    width: 1000px;
+    
     background-image: url("../images/game-menu/space-background.jpg");
-}
+}*/
 
+
+
+body {
+    margin: 0 auto;
+    padding:0;
+    width: 1000px;
+    height: 700px;
+    font-family: 'Trebuchet MS', Consolas, sans-serif;
+    border: 1px solid black;
+    position:relative;
+    background: black;
+    background-image: url(../images/menu-back2.jpg);
+    background-position: 175px 0px;
+    background-size: 1000px 700px;
+    background-repeat:no-repeat;
+    
+}
 h1 {
     align-content: center;
     text-align: center;
     color: mediumturquoise;
     margin:45px;
+    padding-left: 25px;
     text-shadow: 0px 0px 10px aqua;
 }
 
@@ -23,12 +44,12 @@ li {
     text-align: center;
     margin:45px;
     font-size:large;
-    text-shadow: 0px 0px 5px aqua;
+    text-shadow: 0px 0px 5px azure;
 }
 
 a{   
     text-decoration: none;
-    color: mediumaquamarine;
+    color: azure;
 }
 
 a:hover {
@@ -43,6 +64,6 @@ footer {
     top: 560px;
     color: azure;
     background-color:darkslateblue;
-    width:100%;
+    width: 975px;
     padding-left: 25px;
 }
