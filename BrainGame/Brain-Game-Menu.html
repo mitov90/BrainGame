@@ -9,18 +9,33 @@
     <script src="scripts/game-menu.js"></script>
 </head>
 <body onload="runMenu()">
-    <h1>Space Brain Game</h1>
-    <div id="inGameMenu">
-        <ul>
-            <li><a href="brain-game.html">Play Normal Game</a></li>
-            <li><a href="brain-game.html">Play Expert Game</a></li>
-            <li><a href="brain-game-help.html">Help</a></li>
+    <h1>Space Brain - The Game</h1>
+    <div class="start-game-menu-container">
+        <ul class="start-game-menu-list">
+            <li class="play-game-category">
+                <h2>Play Game</h2>
+                <ul class="play-game-difficulty-list">
+                    <li><a href="">Normal</a></li>
+                    <li><a href="">Nightmare</a></li>
+                    <li><a href="">Hell</a></li>
+                </ul>
+            </li>
+            <li class="help-game-category">He
+                <h1>Controls' Instructions</h1>
+                <p>'w', 'up arrow' - move up</p>
+                <p>'a', 'left arrow' - move left</p>
+                <p>'s', 'down arrow' - move down</p>
+                <p>'d', 'right arrow' - move right</p>
+                <p>'mouse left button' - picks equotation</p>
+                <p>
+                    After the beggining of the game on the right screen you will see colorfull bubbles with numbers
+                    and an equation you need to solve in order to load your ship with fuel. Clicking on the bubble with
+                    the number you think is the answer will add to your fuel. Clicking on a wrong answer will remove some
+                    of the fuel.
+                </p>
+            </li>
             <li><a href="#">Highscores</a></li>
         </ul>
-    </div>
-    
-    <div id="wrapper">
-      
     </div>
     <footer>Team "Ermac" Telerik Academy 2014</footer>
 </body>

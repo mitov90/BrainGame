@@ -11,10 +11,11 @@ function getNumbersGame(holderID, difficulty) {
     var constants = {
         // node properties:
         nodeSize: 30, // serves also for node circle radius
+        nodeCountMultiplayer: 10,
         nodeMoveTrajectoryLengthMultyplyer: 2, // all nodes move a little - this is by how much relative to their size
         nodeMoveTrajectoryOverlapMultyplyer: 0, // all nodes will overlap a little - by this value * their size
         closeToAnswerNodesCount: 2, // nodes with the same answer as the real one but with different color
-        colors: ['#FFAEAE', '#56BAEC', '#B0E57C', '#FFEC94'],
+        colors: ['0.33', '0.52', '0.16', '0'], // green blue yellow and red
 
         // equation generator constants
         operations: 4, // + - * / - reduce this to operate with fiew operators
@@ -25,9 +26,13 @@ function getNumbersGame(holderID, difficulty) {
 
         // drawing properties
         nodeTextStroke: '#000',
-        nodeTextStrokeWidth: 2,
+        equationTextStroke: '#000',
+        nodeTextStrokeWidth: 1.7,
         nodeTextFontSize: '22px',
-        nodeTextfontFamily: 'Calibri'
+        nodeTextfontFamily: 'Calibri',
+
+        // animation properties
+        nodeAlterTime : 1500,
     };
 
     // all coordinates object
@@ -60,23 +65,21 @@ function getNumbersGame(holderID, difficulty) {
         return allCoords;
     }());
 
-
     // ball creator
     Raphael.fn.numberBall = function (x, y, r, hue) {
-        hue = hue || 0;
         return this.set(
             this.ellipse(x, y + r - r / 5, r, r / 2).attr({
-                fill: "rhsb(" + hue + ", 1, .25)-hsb(" + hue + ", 1, .25)",
+                fill: hue,
                 stroke: "none",
                 opacity: 0
             }),
             this.ellipse(x, y, r, r).attr({
-                fill: "r(.5,.9)hsb(" + hue + ", 1, 0.9)-hsb(" + hue + ", .8, .3)",
+                fill: hue,
                 stroke: "none"
             }),
             this.ellipse(x, y, r - r / 5, r - r / 20).attr({
                 stroke: "none",
-                fill: "r(.5,.1)#ccc-#ccc",
+                fill: hue,
                 opacity: 0
             }),
             this.text(0, 0, '').attr({
@@ -96,39 +99,20 @@ function getNumbersGame(holderID, difficulty) {
     // setting the set object x,y,cx,cy moves both objects together
     var allNodesObject = (function () {
         var equationNode = new NumberSetNode(paperToDrawOn);
-        equationNode.set.click(function () {
-            RefreshAllNodesObject();
-        });
+        equationNode.set[3].attr({
+            stroke: constants.equationTextStroke,
+        })
 
         var realAnswerNode = new NumberSetNode(paperToDrawOn);
         realAnswerNode.set.click(onCorrectAnswerGiven);
 
         var fakeAnswerNodes = [];
-        var numberOfNodes = gameDifficulty * 10;
+        var numberOfNodes = gameDifficulty * constants.nodeCountMultiplayer;
         for (var i = 0; i < numberOfNodes; i++) {
             var currNodeToPush = new NumberSetNode(paperToDrawOn);
             currNodeToPush.set.click(onWrongAnswerGiven);
             fakeAnswerNodes.push(currNodeToPush);
         }
-
-        //animation func for hover effect
-        function animateHover() {
-            this.g = this.glow({color: "#FFF", width: 100});
-        }
-
-        function removeHover(){
-            //this.g.remove();
-        }
-
-        // attach individual animation events here
-        // equationNode.set.animate(...)
-        // all nodes are Raphael set objects
-
-        // this is a sample animation for the equation node
-        var animationTime = 3000;
-        var anim = Raphael.animation({ "transform": "r 360" }, animationTime, "bounce");
-        var t = equationNode.set.animate(anim.repeat(1000)); // run the given animation after 500 ms
-        setTimeout(function(){t.stop()},animationTime);
 
         return {
             equationNode: equationNode,
@@ -153,10 +137,7 @@ function getNumbersGame(holderID, difficulty) {
         }
 
         function NumberSetNode(paper) {
-            this.set = paper.numberBall(0, 0, constants.nodeSize, Math.random());
-
-            // animating all node objects here
-            // this.set.animate(...);
+            this.set = paper.numberBall(0, 0, constants.nodeSize, '0.44');
         }
     }());
 
@@ -187,41 +168,69 @@ function getNumbersGame(holderID, difficulty) {
     function changeAllNodesContent(allNodesObjectToAlter) {
         // generate the next equation to use
         var currentEquation = generateRandomEquation();
-        var currentEqColor = constants.colors[getRandom(constants.colors.length)];
+        var currentEqColorIndex = getRandom(constants.colors.length);
+        var currentEqColorArray = getColorStringsArray(constants.colors[currentEqColorIndex]);
 
         var i;
         var answerToUse;
-        var colorToUse;
+        var colorIndexToUse;
+        var colorArrayToUse;
 
         // generate equation node
         (function () {
-            allNodesObjectToAlter.equationNode.set.attr({
+            allNodesObjectToAlter.equationNode.set[0].attr({
+                fill: currentEqColorArray[0],
+            });
+            allNodesObjectToAlter.equationNode.set[1].attr({
+                fill: currentEqColorArray[1],
+            });
+            allNodesObjectToAlter.equationNode.set[2].attr({
+                fill: currentEqColorArray[2],
+            });
+            allNodesObjectToAlter.equationNode.set[3].attr({
                 text: currentEquation.text,
-                //fill: currentEqColor
             });
         }());
 
         // generate real answer node
         (function () {
-            allNodesObjectToAlter.realAnswerNode.set.attr({
+            allNodesObjectToAlter.realAnswerNode.set[0].attr({
+                fill: currentEqColorArray[0],
+            });
+            allNodesObjectToAlter.realAnswerNode.set[1].attr({
+                fill: currentEqColorArray[1],
+            });
+            allNodesObjectToAlter.realAnswerNode.set[2].attr({
+                fill: currentEqColorArray[2],
+            });
+            allNodesObjectToAlter.realAnswerNode.set[3].attr({
                 text: currentEquation.answer,
-                //fill: currentEqColor
             });
         }());
 
         // generate close to answer nodes with text == answer and color != answer
         (function () {
             for (i = 0; i < constants.closeToAnswerNodesCount; i++) {
-                colorToUse = constants.colors[getRandom(constants.colors.length)];
+                colorIndexToUse = getRandom(constants.colors.length);
 
                 // if the generated color is the same as the real answer - create again
-                while (colorToUse === currentEqColor) {
-                    colorToUse = constants.colors[getRandom(constants.colors.length)];
+                while (colorIndexToUse == currentEqColorIndex) {
+                    colorIndexToUse = getRandom(constants.colors.length);
                 }
 
-                allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
+                colorArrayToUse = getColorStringsArray(constants.colors[colorIndexToUse]);
+
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[0].attr({
+                    fill: colorArrayToUse[0],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[1].attr({
+                    fill: colorArrayToUse[1],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[2].attr({
+                    fill: colorArrayToUse[2],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[3].attr({
                     text: currentEquation.answer,
-                    //fill: colorToUse
                 });
             }
         }());
@@ -230,13 +239,23 @@ function getNumbersGame(holderID, difficulty) {
         (function () {
             for (i = constants.closeToAnswerNodesCount; i < allNodesObjectToAlter.fakeAnswerNodes.length; i++) {
                 answerToUse = getRandom(constants.maxNumberAddSubstract);
+                colorArrayToUse = getColorStringsArray(constants.colors[getRandom(constants.colors.length)]);
 
                 while (answerToUse === currentEquation.answer) {
                     answerToUse = getRandom(constants.maxNumberAddSubstract);
                 }
-                allNodesObjectToAlter.fakeAnswerNodes[i].set.attr({
+
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[0].attr({
+                    fill: colorArrayToUse[0],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[1].attr({
+                    fill: colorArrayToUse[1],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[2].attr({
+                    fill: colorArrayToUse[2],
+                });
+                allNodesObjectToAlter.fakeAnswerNodes[i].set[3].attr({
                     text: answerToUse,
-                    //fill: constants.colors[getRandom(constants.colors.length)]
                 });
             }
         }());
@@ -271,7 +290,7 @@ function getNumbersGame(holderID, difficulty) {
                 operand1 = getRandom(constants.maxNumberMultyply);
                 operand2 = getRandom(constants.maxNumberMultyply);
 
-                return new Equation(operand1 + "*" + operand2, operand1 * operand2);
+                return new Equation(operand1 + "x" + operand2, operand1 * operand2);
             }
             else if (currentOperation == divide) {
                 operand1 = getRandom(constants.maxNumberToDivide);
@@ -283,7 +302,7 @@ function getNumbersGame(holderID, difficulty) {
                     operand2 = getRandom(constants.maxNumberToDivideOn) + 2;
                 }
 
-                return new Equation(operand1 + "/" + operand2, operand1 / operand2);
+                return new Equation(operand1 + ":" + operand2, operand1 / operand2);
             }
 
             // equation object
@@ -309,16 +328,24 @@ function getNumbersGame(holderID, difficulty) {
             function multiply(a, b) {
                 return {
                     answer: a * b,
-                    operator: '*'
+                    operator: 'x'
                 };
             }
 
             function divide(a, b) {
                 return {
                     answer: a / b,
-                    operator: '/'
+                    operator: ':'
                 };
             }
+        }
+
+        function getColorStringsArray(colorVal) {
+            return [
+                "rhsb(" + colorVal + ", 1, .55)-hsb(" + colorVal + ", 1, .25)",
+                "r(.5,.9)hsb(" + colorVal + ", 1, 1)-hsb(" + colorVal + ", .99, .35)",
+                "r(.65,.1)#ccc-#ccc"
+            ];
         }
     }
 
@@ -329,36 +356,34 @@ function getNumbersGame(holderID, difficulty) {
 
         // changing all the fake nodes
         for (var index = 0; index < allNodesObjectToAlter.fakeAnswerNodes.length; index++) {
-            allNodesObjectToAlter.fakeAnswerNodes[index].set.attr({
+            allNodesObjectToAlter.fakeAnswerNodes[index].set.animate({
                 x: allCoordinatesObjectToUse[index].x,
                 cx: allCoordinatesObjectToUse[index].x,
                 y: allCoordinatesObjectToUse[index].y,
                 cy: allCoordinatesObjectToUse[index].y
-            });
+            }, constants.nodeAlterTime, "elastic");
         }
 
         // changing the equationNode
-
         // the index is already incremented by the for cycle above
-        allNodesObjectToAlter.equationNode.set.attr({
+        allNodesObjectToAlter.equationNode.set.animate({
             x: allCoordinatesObjectToUse[index].x,
             cx: allCoordinatesObjectToUse[index].x,
             y: allCoordinatesObjectToUse[index].y,
             cy: allCoordinatesObjectToUse[index].y
-        });
+        }, constants.nodeAlterTime, "bounce");
 
 
         // changing the real answerNode
-
         // the index is the same as with equationNode coordinates
         index++;
 
-        allNodesObjectToAlter.realAnswerNode.set.attr({
+        allNodesObjectToAlter.realAnswerNode.set.animate({
             x: allCoordinatesObjectToUse[index].x,
             cx: allCoordinatesObjectToUse[index].x,
             y: allCoordinatesObjectToUse[index].y,
             cy: allCoordinatesObjectToUse[index].y
-        });
+        }, constants.nodeAlterTime, "elastic");
 
         // Fisher-Yates shuffle implementation
         // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
@@ -379,20 +404,6 @@ function getNumbersGame(holderID, difficulty) {
     function RefreshAllNodesObject() {
         changeAllNodesContent(allNodesObject);
         changeAllNodesCoordinates(allNodesObject, allCoordinatesObject);
-
-        // TODO: raphael objects
-        //allNodesObject.equationNode.set.animate({
-        //    fill: 'red',
-        //    'fill-opacity': '1',
-        //    callback: function () {
-        //        allNodesObject.equationNode.set.animate({
-        //            fill: 'white',
-        //            'fill-opacity': '0'
-        //        }, 500)
-        //    }
-        //}, 500);
-        //allNodesObject.realAnswerNode.set
-        //allNodesObject.fakeAnswerNodes.set
     }
 
     // returns a random int number from 0 to x NOT including x
@@ -469,4 +480,3 @@ function getNumbersGame(holderID, difficulty) {
      //    // testDrawRandomSetOfElementsAndChangeThemOnClick();
      //}());
 }
-
