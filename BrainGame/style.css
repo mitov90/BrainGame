@@ -1,7 +1,10 @@
 ﻿body {
     margin: 0 auto;
     padding:0;
+    width: 1000px;
+    height: 700px;
     font-family: 'Trebuchet MS', Consolas, sans-serif;
+    border: 1px solid black;
     position:relative;
     background: black;
     background-image: url(../images/bodyBack.png);
@@ -12,9 +15,10 @@
     margin: 0 auto;
     padding:0;
     width: 1000px;
-    height: 640px;
+    height: 700px;
+    border: 1px solid black;
     position:relative;
-    display:none;
+    background-image: url(../images/GameBackground.png);
 }
 
 #game-wrapper text {
@@ -53,83 +57,85 @@
     height: 120px;
 }
 
-#start-game-menu-container {
-    background-image: url(../images/bodyBack.png);
-    background-repeat:repeat;
-    text-align: center;
-}
-
-#start-game-menu-container ul {
-    list-style:none;
-    padding:0;
-    margin:0;
-    list-style-type: none;
-}
-
-#start-game-menu-container .information h3 {
+#game-wrapper .information h3 {
     margin: 0;
 }
 
-#start-game-menu-container .help-title {
+#game-wrapper .help-title {
     align-content: center;
+    text-align: center;
     color: mediumturquoise;
-    font-size:3em;
+    margin-left:45px;
+    font-size:28px;
     font-weight: bold;
+    padding-left: 25px;
     text-shadow: 0 0 10px aqua;
 }
 
-#start-game-menu-container .help-text {
+#game-wrapper .help-text {
+    
     color: azure;
-    font-size:3em;
+    margin-left:45px;
+    font-size:20px;
+    padding-left: 25px;
+    top: 800px;
+    left: 1300px;
     text-shadow: 0 0 10px aqua;
 }
 
-#start-game-menu-container .help-content {
-    display:none;
-    color:white;
-}
-
-#start-game-menu-container .help-content h2{
-    color: aqua;
-    text-shadow: 0 0 10px mediumturquoise;
-}
-
-#start-game-menu-container .return {
+#game-wrapper .return {
+    
     color: mediumturquoise;
     margin:45px;
-    font-size:3em;
+    font-size:20px;
+    padding-left: 25px;
     font-weight: bold;
+    top: 800px;
+    left: 1300px;
     text-shadow: 0 0 10px aqua;
 }
 
-#start-game-menu-container h1 {
+#game-wrapper h1 {
     align-content: center;
+    text-align: center;
     color: mediumturquoise;
     margin:45px;
+    padding-left: 25px;
     text-shadow: 0 0 10px aqua;
-    font-size:4em;
 }
 
-#start-game-menu-container li {
+#game-wrapper ul {
+    list-style-type: none;
+}
+
+#game-wrapper li {
     text-emphasis:none;
+    /*
+        font-weight:bold;
+        */
+    text-align: center;
     margin:45px;
-    font-size:3em;
+    font-size:28px;
     text-shadow: 0 0 5px azure;
 }
 
-#start-game-menu-container a{   
+#game-wrapper a{   
     text-decoration: none;
     color: azure;
 }
 
-#start-game-menu-container a:hover {
-    color: orangered;
-    text-shadow: 0 0 5px orangered;
+#game-wrapper a:hover {
+    color: darkgoldenrod;
+    text-shadow: 0 0 5px darkgoldenrod;
 }
 
-#start-game-menu-container footer {
+#game-wrapper footer {
     font-family: 'helvetica', Consolas, sans-serif;
+    position: absolute;
+    left: 0;
+    top: 560px;
     color: azure;
     background-color:darkslateblue;
-    padding:10px 0;
+    width: 975px;
+    padding-left: 25px;
 }
