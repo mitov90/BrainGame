@@ -1,25 +1,31 @@
-﻿function createGame(holderQuerrySelector) {
+﻿// creates a game in holder with difficulty 1 2 or 3
+function createGame(holderQuerrySelector, difficultySetting) {
+    var difficulty = difficultySetting || 1;
     var $holder = $(holderQuerrySelector);
 
     var $shipGame = $('<div />')
                         .attr('id', 'game-ship')
+                        .addClass('game-ship')
                         .appendTo($holder);
 
     var $numbersGame = $('<div />')
                         .attr('id', 'game-numbers')
+                        .addClass('game-numbers')
                         .appendTo($holder);
 
     var $graphGame = $('<div />')
-                        .attr('id', 'game-graph')
+                        .attr('id','game-graph')
+                        .addClass('game-graph')
                         .appendTo($holder);
 
     var score = 0;
-    var fuel = 100;
+    var fuel = difficulty == 3 ? 60 : difficulty == 2 ? 80 : 100;
     
-    var shipGame = getShipGame($shipGame.attr('id'));
-    shipGame.attachObserverFunction(endGame);
+    var shipGame = getShipGame($shipGame.attr('id'), difficultySetting);
+    shipGame.attachObserverFunction(gameOver);
+    shipGame.startGame();
 
-    var numbersGame = getNumbersGame($numbersGame.attr('id'));
+    var numbersGame = getNumbersGame($numbersGame.attr('id'), difficulty);
     numbersGame.attachRightAnswerObserverFunction(numbersRightAnswer);
     numbersGame.attachWrongAnswerObserverFunction(numbersWrongAnswer);
 
@@ -28,11 +34,12 @@
     var gameEngine = setInterval(gameRefresh, 100);
 
     function gameRefresh() {
-        score++;
-        fuel -= 0.1;
+        score += 0.2 * difficulty;
+        fuel -= 0.1 * difficulty;
 
         if (fuel <= 0) {
-            endGame();
+            shipGame.endGame();
+            gameOver();
         }
 
         // graph Y is on 0 to 120 -> on 100 fuel - 20 Y
@@ -44,7 +51,7 @@
     }
 
     function numbersRightAnswer() {
-        fuel += 5;
+        fuel += 10;
         score += 10;
         graph.addAnswered();
     }
@@ -53,8 +60,7 @@
         fuel -= 10;
     }
 
-    function endGame() {
-        // what to do when game over
+    function gameOver() {
         clearInterval(gameEngine);
         setTimeout(function () {
             $holder.fadeOut(3000);

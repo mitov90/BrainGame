@@ -70,7 +70,7 @@ function createGraph(containerID) {
         drawPoint: drawPoint,
 
         setScore: function (score) {
-            scoreStat.setText(score);
+            scoreStat.setText(Math.round(score));
         },
 
         setFuel: function (fuel) {
@@ -106,11 +106,11 @@ function createGraph(containerID) {
             yHeight = Math.min(120, yHeight);
             var red = Math.floor(yHeight * 2.12).toString(16);
             if (red.length == 1) {
-                red += '0';
+                red = red + '0';
             }
             var green = Math.floor(255 - (yHeight * 2.12)).toString(16);
             if (green.length == 1) {
-                green += 'f';
+                green = green + 'f';
             }
             return "#" + red + green + "00";
         }

@@ -1,15 +1,6 @@
-﻿Raphael.fn.ball = function (x, y, r, hue) {
-    hue = hue || 0;
-    return this.set(
-        this.ellipse(x, y + r - r / 5, r, r / 2).attr({ fill: "rhsb(" + hue + ", 1, .25)-hsb(" + hue + ", 1, .25)", stroke: "none", opacity: 0 }),
-        this.ellipse(x, y, r, r).attr({ fill: "r(.5,.9)hsb(" + hue + ", 1, 0.9)-hsb(" + hue + ", .8, .3)", stroke: "none" }),
-        this.ellipse(x, y, r - r / 5, r - r / 20).attr({ stroke: "none", fill: "r(.5,.1)#ccc-#ccc", opacity: 0 })
-    );
-};
-
-
-// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
-function getNumbersGame(holderID) {
+﻿// needs coordinates ot top left window and size of window (must be square by logic for coordinates object)
+function getNumbersGame(holderID, difficulty) {
+    var gameDifficulty = difficulty || 1;
     var holder = document.getElementById(holderID);
     var windowSize = holder.offsetWidth;
 
@@ -22,7 +13,6 @@ function getNumbersGame(holderID) {
         nodeSize: 30, // serves also for node circle radius
         nodeMoveTrajectoryLengthMultyplyer: 2, // all nodes move a little - this is by how much relative to their size
         nodeMoveTrajectoryOverlapMultyplyer: 0, // all nodes will overlap a little - by this value * their size
-        allNodesCount: 20,
         closeToAnswerNodesCount: 2, // nodes with the same answer as the real one but with different color
         colors: ['#FFAEAE', '#56BAEC', '#B0E57C', '#FFEC94'],
 
@@ -40,6 +30,65 @@ function getNumbersGame(holderID) {
         nodeTextfontFamily: 'Calibri'
     };
 
+    // all coordinates object
+    // needs windowSize
+    var allCoordinatesObject = (function () {
+        var allCoords = [];
+
+        // all the nodes are set in the constant. Only 2 are left - the real answer node and the equation node
+        // if a node has a size of 40 and the multiplyer is 2 the node will move in a trajectory of 80px
+        var neededSizeForASingleNode = Math.floor(
+                                          (constants.nodeSize * constants.nodeMoveTrajectoryLengthMultyplyer) -
+                (constants.nodeSize * constants.nodeMoveTrajectoryOverlapMultyplyer));
+
+        var numberOfNodesPerLine = Math.floor(windowSize / neededSizeForASingleNode);
+
+        var centerX;
+        var centerY;
+
+        for (var rowX = 0; rowX < numberOfNodesPerLine; rowX++) {
+            for (var colY = 0; colY < numberOfNodesPerLine; colY++) {
+                centerX = Math.floor((rowX * neededSizeForASingleNode) + neededSizeForASingleNode / 2);
+                centerY = Math.floor((colY * neededSizeForASingleNode) + neededSizeForASingleNode / 2);
+                allCoords.push({
+                    x: centerX,
+                    y: centerY
+                });
+            }
+        }
+
+        return allCoords;
+    }());
+
+
+    // ball creator
+    Raphael.fn.numberBall = function (x, y, r, hue) {
+        hue = hue || 0;
+        return this.set(
+            this.ellipse(x, y + r - r / 5, r, r / 2).attr({
+                fill: "rhsb(" + hue + ", 1, .25)-hsb(" + hue + ", 1, .25)",
+                stroke: "none",
+                opacity: 0
+            }),
+            this.ellipse(x, y, r, r).attr({
+                fill: "r(.5,.9)hsb(" + hue + ", 1, 0.9)-hsb(" + hue + ", .8, .3)",
+                stroke: "none"
+            }),
+            this.ellipse(x, y, r - r / 5, r - r / 20).attr({
+                stroke: "none",
+                fill: "r(.5,.1)#ccc-#ccc",
+                opacity: 0
+            }),
+            this.text(0, 0, '').attr({
+                'text-anchor': 'center',
+                stroke: constants.nodeTextStroke,
+                'stroke-width': constants.nodeTextStrokeWidth,
+                'font-size': constants.nodeTextFontSize,
+                'font-family': constants.nodeTextfontFamily
+            })
+        );
+    };
+
     // generates the initial allNodesObject which to be used troughout the game loop;
     // they own properties .equationNode ; .realAnswerNode ; .fakeAnswerNodes ([])
     // all the properties are left undefined
@@ -55,8 +104,8 @@ function getNumbersGame(holderID) {
         realAnswerNode.set.click(onCorrectAnswerGiven);
 
         var fakeAnswerNodes = [];
-
-        for (var i = 0; i < constants.allNodesCount; i++) {
+        var numberOfNodes = gameDifficulty * 10;
+        for (var i = 0; i < numberOfNodes; i++) {
             var currNodeToPush = new NumberSetNode(paperToDrawOn);
             currNodeToPush.set.click(onWrongAnswerGiven);
             fakeAnswerNodes.push(currNodeToPush);
@@ -88,7 +137,6 @@ function getNumbersGame(holderID) {
         };
 
         function onCorrectAnswerGiven() {
-
             if (rightAnswerObserverFunction) {
                 rightAnswerObserverFunction();
             }
@@ -97,7 +145,6 @@ function getNumbersGame(holderID) {
         }
 
         function onWrongAnswerGiven() {
-
             if (wrongAnswerObserverFunction) {
                 wrongAnswerObserverFunction();
             }
@@ -105,62 +152,12 @@ function getNumbersGame(holderID) {
             RefreshAllNodesObject();
         }
 
-        // creates a new Raphael Set node with circle and text appended
-        // sets initial settings and coordinates 0 0
-
-        
-
         function NumberSetNode(paper) {
-            paper.setStart();
-            //paper.circle(0, 0, constants.nodeSize);
-            paper.ball(0, 0, constants.nodeSize, Math.random()); // TODO: fix random colors
-            paper.text(0, 0, '')
-                .attr({
-                    'text-anchor': 'center',
-                    stroke: constants.nodeTextStroke,
-                    'stroke-width': constants.nodeTextStrokeWidth,
-                    'font-size': constants.nodeTextFontSize,
-                    'font-family': constants.nodeTextfontFamily
-                });
-
-            this.set = paper.setFinish();
-
-            
-
+            this.set = paper.numberBall(0, 0, constants.nodeSize, Math.random());
 
             // animating all node objects here
             // this.set.animate(...);
         }
-    }());
-
-    // all coordinates object
-    // needs windowSize
-    var allCoordinatesObject = (function () {
-        var allCoords = [];
-
-        // all the nodes are set in the constant. Only 2 are left - the real answer node and the equation node
-        // if a node has a size of 40 and the multiplyer is 2 the node will move in a trajectory of 80px
-        var neededSizeForASingleNode = Math.floor(
-                                          (constants.nodeSize * constants.nodeMoveTrajectoryLengthMultyplyer) -
-                (constants.nodeSize * constants.nodeMoveTrajectoryOverlapMultyplyer));
-
-        var numberOfNodesPerLine = Math.floor(windowSize / neededSizeForASingleNode);
-
-        var centerX;
-        var centerY;
-
-        for (var rowX = 0; rowX < numberOfNodesPerLine; rowX++) {
-            for (var colY = 0; colY < numberOfNodesPerLine; colY++) {
-                centerX = Math.floor((rowX * neededSizeForASingleNode) + neededSizeForASingleNode / 2);
-                centerY = Math.floor((colY * neededSizeForASingleNode) + neededSizeForASingleNode / 2);
-                allCoords.push({
-                    x: centerX,
-                    y: centerY
-                });
-            }
-        }
-
-        return allCoords;
     }());
 
     var rightAnswerObserverFunction;

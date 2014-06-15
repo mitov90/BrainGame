@@ -4,7 +4,7 @@
     background-color:black;
 }
 
-#wrapper {
+#game-wrapper {
     margin: 0 auto;
     padding:0;
     width: 1000px;
@@ -15,7 +15,7 @@
     
 }
 
-#wrapper text {
+#game-wrapper text {
     /*this fix bug cursor select text over nodes
       and more fluent gameplay*/
     -webkit-user-select: none;
@@ -25,11 +25,11 @@
     cursor:default;
 }
 
-#wrapper > div {
+#game-wrapper > div {
     position:absolute;
 }
 
-#game-numbers {
+#game-wrapper .game-numbers {
     margin:20px 0;
     position:absolute;
     right:0;
@@ -37,38 +37,24 @@
     height:460px;
 }
 
-#game-ship {
+#game-wrapper .game-ship {
     margin:20px 0;
     left:0;
     width:460px;
     height:460px;
 }
 
-#game-graph {
+#game-wrapper .game-graph {
     top:500px;
     left:350px;
     width: 300px;
     height: 120px;
 }
 
-#information h3 {
+#game-wrapper .information h3 {
     margin: 0;
 }
 
-footer {
+#game-wrapper footer {
     text-align: right;
-}
-
-.box_rotate {
-  -webkit-transform: rotate(90deg);  /* Chrome, Safari 3.1+ */
-    -moz-transform: rotate(90deg);  /* Firefox 3.5-15 */
-      -ms-transform: rotate(90deg);  /* IE 9 */
-        -o-transform: rotate(90deg);  /* Opera 10.50-12.00 */
-         transform: rotate(90deg);  /* Firefox 16+, IE 10+, Opera 12.50+ */
-}
-.box_transition {
-  -webkit-transition: all 3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
-     -moz-transition: all 3s ease-out;  /* Firefox 4-15 */
-       -o-transition: all 3s ease-out;  /* Opera 10.50–12.00 */
-          transition: all 3s ease-out;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.50+ */
 }

@@ -1,5 +1,6 @@
 ﻿// needs coordinates ot top left window and size of window (square as the other game)
-function getShipGame(containerID) {
+function getShipGame(containerID, difficulty) {
+    var gameDifficulty = difficulty || 1;
     var windowSize = document.getElementById(containerID).offsetWidth;
 
     var stage = new Kinetic.Stage({
@@ -11,12 +12,12 @@ function getShipGame(containerID) {
     var constants = {
         moveSpeed: 5,
         moveCheckInterval: 20,
-        asteroidsCount: 10,
         asteroidSizeVary: 2,
         asteroidSizeConst: 20,
         addNewAsteroidTime1: 1500,
-        addNewAsteroidTime2: 3300,
-        moveAsteroidsTime: 20,
+        addNewAsteroidTime2: 2000,
+        addNewAsteroidTime3: 2500,
+        moveAsteroidsTime: 25,
     };
 
     var observerFunction = false;
@@ -35,11 +36,12 @@ function getShipGame(containerID) {
     var asteroidImage = new Image();
     asteroidImage.src = 'images/ship-game/asteroid.png';
 
-    var asteroidsAdder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
-    var asteroidsAdder2 = setInterval(addNewAsteroid, constants.addNewAsteroidTime2);
-    var asteroidsMover = setInterval(moveAsteroids, constants.moveAsteroidsTime);
+    var asteroidsAdder1; 
+    var asteroidsAdder2;
+    var asteroidsAdder3;
+    var asteroidsMover;
     
-    // ship generation
+    // ship set Up
     var ship;
     (function () {
         var shipImageSprites = new Image();
@@ -64,96 +66,131 @@ function getShipGame(containerID) {
         ship.start();
     }());
     
-    var keyboardListener;
     // Player Movement Set Up
-    (function () {
-        var keyArrowUp = false;
-        var keyArrowDown = false;
-        var keyArrowLeft = false;
-        var keyArrowRight = false;
+    var keyboardListener;
+    var keyArrowUp = false;
+    var keyArrowDown = false;
+    var keyArrowLeft = false;
+    var keyArrowRight = false;
+    
+    window.addEventListener("keydown", function (e) {
+        switch (e.which) {
+            case 38:
+            case 87: // W
+                keyArrowUp = true;
+                break;
+            case 40:
+            case 83: // S
+                keyArrowDown = true;
+                break;
+            case 37:
+            case 65: // A
+                keyArrowLeft = true;
+                break;
+            case 39:
+            case 68: // D
+                keyArrowRight = true;
+                break;
+        }
+        e.preventDefault();
+    });
 
-        window.addEventListener("keydown", function (e) {
-            switch (e.which) {
-                case 38:
-                case 87: // W
-                    keyArrowUp = true;
-                    break;
-                case 40:
-                case 83: // S
-                    keyArrowDown = true;
-                    break;
-                case 37:
-                case 65: // A
-                    keyArrowLeft = true;
-                    break;
-                case 39:
-                case 68: // D
-                    keyArrowRight = true;
-                    break;
-            }
-            e.preventDefault();
-        });
+    window.addEventListener("keyup", function (e) {
+        switch (e.which) {
+            case 38:
+            case 87: // W
+                keyArrowUp = false;
+                break;
+            case 40:
+            case 83: // S
+                keyArrowDown = false;
+                break;
+            case 37:
+            case 65: // A
+                keyArrowLeft = false;
+                break;
+            case 39:
+            case 68: // D
+                keyArrowRight = false;
+                break;
+        }
+        e.preventDefault();
+    });
 
-        window.addEventListener("keyup", function (e) {
-            switch (e.which) {
-                case 38:
-                case 87: // W
-                    keyArrowUp = false;
-                    break;
-                case 40:
-                case 83: // S
-                    keyArrowDown = false;
-                    break;
-                case 37:
-                case 65: // A
-                    keyArrowLeft = false;
-                    break;
-                case 39:
-                case 68: // D
-                    keyArrowRight = false;
-                    break;
+    function getPlayerMovement() {
+        if (keyArrowUp) {
+            ship.setY(ship.getY() - constants.moveSpeed);
+            if (ship.getY() < 0) {
+                ship.setY(0);
             }
-            e.preventDefault();
-        });
+        }
+        else if (keyArrowDown) {
+            ship.setY(ship.getY() + constants.moveSpeed);
+            // vertical size of ship is 45 and field size is 460
+            if (ship.getY() > 460 - 45) {
+                ship.setY(460 - 45);
+            }
+        }
+        if (keyArrowLeft) {
+            ship.setX(ship.getX() - constants.moveSpeed);
+            if (ship.getX() < 0) {
+                ship.setX(0);
+            }
+        }
+        else if (keyArrowRight) {
+            ship.setX(ship.getX() + constants.moveSpeed);
+            // horizontal size of ship is 50 and field size is 460
+            if (ship.getX() > 460 - 50) {
+                ship.setX(460 - 50);
+            }
+        }
 
-        keyboardListener = setInterval(function (e) {
-            if (keyArrowUp) {
-                ship.setY(ship.getY() - constants.moveSpeed);
-                if (ship.getY() < 0) {
-                    ship.setY(0);
-                }
-            }
-            else if (keyArrowDown) {
-                ship.setY(ship.getY() + constants.moveSpeed);
-                // vertical size of ship is 45 and field size is 460
-                if (ship.getY() > 460 - 45) {
-                    ship.setY(460 - 45);
-                }
-            }
-            if (keyArrowLeft) {
-                ship.setX(ship.getX() - constants.moveSpeed);
-                if (ship.getX() < 0) {
-                    ship.setX(0);
-                }
-            }
-            else if (keyArrowRight) {
-                ship.setX(ship.getX() + constants.moveSpeed);
-                // horizontal size of ship is 50 and field size is 460
-                if (ship.getX() > 460 - 50) {
-                    ship.setX(460 - 50);
-                }
-            }
-
-            checkAsteroids();
-        }, constants.moveCheckInterval);
-    }())
+        checkAsteroids();
+    }
 
     stage.add(layer);
 
     return {
-        gameOver: gameOver,
-        attachObserverFunction: attachObserverFunction
+        attachObserverFunction: attachObserverFunction,
+        startGame: startGame,
+        pauseGame: pauseGame,
+        endGame: endGame,
     };
+
+    function pauseGame() {
+        clearInterval(asteroidsMover);
+        clearInterval(keyboardListener);
+
+        clearInterval(asteroidsAdder1);
+        if (asteroidsAdder2) {
+            clearInterval(asteroidsAdder2);
+        }
+        if (asteroidsAdder3) {
+            clearInterval(asteroidsAdder3);
+        }
+    }
+
+    function startGame() {
+        keyboardListener = setInterval(getPlayerMovement, constants.moveCheckInterval);
+
+        if (!gameDifficulty || gameDifficulty == 1) {
+            asteroidsAdder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
+            asteroidsMover = setInterval(moveAsteroids, constants.moveAsteroidsTime);
+        }
+        else {
+            if (gameDifficulty == 3) {
+                asteroidsAdder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
+                asteroidsAdder2 = setInterval(addNewAsteroid, constants.addNewAsteroidTime2);
+                asteroidsAdder3 = setInterval(addNewAsteroid, constants.addNewAsteroidTime3);
+                asteroidsMover = setInterval(moveAsteroids, constants.moveAsteroidsTime - 10);
+            }
+            else if (gameDifficulty == 2) {
+                asteroidsAdder1 = setInterval(addNewAsteroid, constants.addNewAsteroidTime1);
+                asteroidsAdder2 = setInterval(addNewAsteroid, constants.addNewAsteroidTime2);
+                asteroidsMover = setInterval(moveAsteroids, constants.moveAsteroidsTime - 5);
+            }
+        }
+    }
 
     function attachObserverFunction(notifyFunction) {
         observerFunction = notifyFunction;
@@ -193,7 +230,10 @@ function getShipGame(containerID) {
                                asteroids[i].attrs.x + asteroids[i].attrs.width / 2,
                                asteroids[i].attrs.y + asteroids[i].attrs.height / 2,
                                19, asteroids[i].attrs.width / 2)) {
-                gameOver();
+                endGame();
+                if (observerFunction) {
+                    observerFunction();
+                }
             }
         }
 
@@ -206,16 +246,18 @@ function getShipGame(containerID) {
         return Math.floor(Math.random() * x);
     }
 
-    function gameOver() {
-        if (observerFunction) {
-            observerFunction();
-        }
-        
-        clearInterval(asteroidsAdder1);
-        clearInterval(asteroidsAdder2);
+    function endGame() {
         clearInterval(asteroidsMover);
         clearInterval(keyboardListener);
         explode();
+        
+        clearInterval(asteroidsAdder1);
+        if (asteroidsAdder2) {
+            clearInterval(asteroidsAdder2);
+        }
+        if (asteroidsAdder3) {
+            clearInterval(asteroidsAdder3);
+        }
 
         function explode() {
             var explosion = new Image();
@@ -336,8 +378,7 @@ function getShipGame(containerID) {
             boom.start();
             setTimeout(function () {
                 boom.stop();
-                
-            }, 1000);
+            }, 800);
         }
     }
 }

@@ -65,6 +65,7 @@
     <Content Include="images\space-background.jpg" />
     <Content Include="images\menu-back2.jpg" />
     <Content Include="images\menu-back3.jpg" />
+    <Content Include="scripts\creator-game.js" />
     <Content Include="scripts\graph-drawer.js" />
     <Content Include="brain-game.html" />
     <Content Include="images\ship-game\asteroid.png" />
