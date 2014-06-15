@@ -78,6 +78,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\JS UI &amp; DOM Course – Teamwork Project – Client-side JavaScript application - “Brain Game” - Documentation.docx" />
+    <Content Include="Documentation\JS UI &amp; DOM Course – Teamwork Project – Client-side JavaScript application - “Brain Game” - Presentation.pptx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

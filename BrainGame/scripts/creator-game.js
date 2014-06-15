@@ -12,7 +12,7 @@
     });
 
     function startGame(opt) {
-        $('#game-wrapper').css('background-image',"url('../images/GameBackground.png')").show();
+        $('#game-wrapper').show();
         $('#start-game-menu-container').remove();
         createGame('#game-wrapper', opt);
     }

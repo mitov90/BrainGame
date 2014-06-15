@@ -15,6 +15,7 @@
     height: 640px;
     position:relative;
     display:none;
+    background-image: url(../images/GameBackground.png);
 }
 
 #game-wrapper text {
