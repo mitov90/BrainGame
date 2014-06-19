@@ -57,6 +57,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ermacTeam.jpg" />
     <Content Include="index.html" />
     <Content Include="images\bodyBack.png" />
     <Content Include="images\GameBackground.png" />
